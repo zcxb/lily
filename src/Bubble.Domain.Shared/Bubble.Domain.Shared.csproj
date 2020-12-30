@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Enums\" />
+    <Folder Include="Consts\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Bubble.Core\Bubble.Core.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -4,15 +4,15 @@
     "classifications": [
         "Web/WebAPI"
     ],
-    "name": "Bubble",
-    "identity": "Bubble",
-    "groupIdentity": "Bubble", 
-    "shortName": "bubble",
+    "name": "LilySimple",
+    "identity": "LilySimple",
+    "groupIdentity": "LilySimple", 
+    "shortName": "LilySimple",
     "tags": {
         "language": "C#",
         "type": "project"
     },
-    "sourceName": "Bubble",
+    "sourceName": "LilySimple",
     "preferNameDirectory": true,
     "sources": [
         {
@@ -25,7 +25,7 @@
                 "**/*.lock.json",
                 "**/.git/**",
                 "**/.vs/**",
-                "**/Bubble.*.xml"
+                "**/LilySimple.*.xml"
             ]
         }
     ]

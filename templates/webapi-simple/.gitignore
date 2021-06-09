@@ -350,4 +350,4 @@ MigrationBackup/
 .ionide/
 
 # Auto generated XML documents
-**/Bubble.*.xml
+**.xml

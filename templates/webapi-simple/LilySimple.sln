@@ -5,14 +5,53 @@ VisualStudioVersion = 16.0.29920.165
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{89CBFD3B-9BCF-4A17-9EBF-72627EBFDCCF}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		Directory.Build.props = Directory.Build.props
 		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D6533DA2-931A-4606-A20E-E9D18AD7AAD2}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LilySimple.Core", "src\LilySimple.Core\LilySimple.Core.csproj", "{764820E2-2F60-4E14-9624-F84F15529D9F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LilySimple.Infra", "src\LilySimple.Infra\LilySimple.Infra.csproj", "{4C22C333-7340-4419-8E9B-10C9E770F68B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LilySimple.Service", "src\LilySimple.Service\LilySimple.Service.csproj", "{0DAA0934-DB4A-4E3B-815A-30EA36458CF1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LilySimple.WebAPI", "src\LilySimple.WebAPI\LilySimple.WebAPI.csproj", "{7AF5CA53-8749-40DB-A896-457629EBD478}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{764820E2-2F60-4E14-9624-F84F15529D9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{764820E2-2F60-4E14-9624-F84F15529D9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{764820E2-2F60-4E14-9624-F84F15529D9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{764820E2-2F60-4E14-9624-F84F15529D9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C22C333-7340-4419-8E9B-10C9E770F68B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C22C333-7340-4419-8E9B-10C9E770F68B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C22C333-7340-4419-8E9B-10C9E770F68B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C22C333-7340-4419-8E9B-10C9E770F68B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DAA0934-DB4A-4E3B-815A-30EA36458CF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DAA0934-DB4A-4E3B-815A-30EA36458CF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DAA0934-DB4A-4E3B-815A-30EA36458CF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DAA0934-DB4A-4E3B-815A-30EA36458CF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AF5CA53-8749-40DB-A896-457629EBD478}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AF5CA53-8749-40DB-A896-457629EBD478}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AF5CA53-8749-40DB-A896-457629EBD478}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AF5CA53-8749-40DB-A896-457629EBD478}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{764820E2-2F60-4E14-9624-F84F15529D9F} = {D6533DA2-931A-4606-A20E-E9D18AD7AAD2}
+		{4C22C333-7340-4419-8E9B-10C9E770F68B} = {D6533DA2-931A-4606-A20E-E9D18AD7AAD2}
+		{0DAA0934-DB4A-4E3B-815A-30EA36458CF1} = {D6533DA2-931A-4606-A20E-E9D18AD7AAD2}
+		{7AF5CA53-8749-40DB-A896-457629EBD478} = {D6533DA2-931A-4606-A20E-E9D18AD7AAD2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {78D6ED2E-EF8D-4F6C-BA84-618A376F656E}

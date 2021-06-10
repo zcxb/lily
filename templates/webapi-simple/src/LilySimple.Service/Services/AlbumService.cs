@@ -4,9 +4,9 @@ using System.Text;
 
 namespace LilySimple.Services
 {
-    public class ServiceBase
+    public class AlbumService : ServiceBase
     {
-        public ServiceBase()
+        public AlbumService()
         {
 
         }

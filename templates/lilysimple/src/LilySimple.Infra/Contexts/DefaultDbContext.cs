@@ -11,15 +11,7 @@ namespace LilySimple.Contexts
     {
         public DefaultDbContext(DbContextOptions<DefaultDbContext> options) : base(options) { }
 
-        public DbSet<Album> Albums { get; set; }
-
-        public DbSet<Artist> Artists { get; set; }
-
-        public DbSet<Category> Categories { get; set; }
-
-        public DbSet<Song> Songs { get; set; }
-
-        public DbSet<Tag> Tags { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

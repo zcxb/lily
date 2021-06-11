@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
+using Hangfire;
 using LilySimple.Configurations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -29,13 +30,22 @@ namespace LilySimple
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDefaultDbContext(Configuration);
             services.AddCustomJwtBearerAuthentication(Configuration);
             services.AddCustomSwagger();
+            services.AddHangfireBackgroundJobs();
             services.AddControllers();
+            services.AddRouting(options =>
+            {
+                options.LowercaseUrls = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(
+            IApplicationBuilder app, 
+            IWebHostEnvironment env,
+            IBackgroundJobClient backgroundJobClient)
         {
             if (env.IsDevelopment())
             {
@@ -49,6 +59,8 @@ namespace LilySimple
             app.UseAuthorization();
             app.UseCustomMiddlewares();
             app.UseCustomEndpoints(Configuration);
+            app.InitDatabase(Configuration);
+            app.UseHangfireBackgroudJobs(backgroundJobClient);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

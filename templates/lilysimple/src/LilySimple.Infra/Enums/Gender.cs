@@ -4,7 +4,7 @@ using System.Text;
 
 namespace LilySimple.Enums
 {
-    public enum Gender
+    public enum Gender : int
     {
         Male,
 

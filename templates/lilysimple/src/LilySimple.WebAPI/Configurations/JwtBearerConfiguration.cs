@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using LilySimple.Settings;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -43,6 +44,7 @@ namespace LilySimple.Configurations
         public static AuthenticationBuilder AddCustomJwtBearerAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
             return services
+                .Configure<JwtBearerSetting>(configuration.GetSection("JwtBearer"))
                 .AddCustomAuthentication()
                 .AddCustomJwtBearer(configuration);
         }

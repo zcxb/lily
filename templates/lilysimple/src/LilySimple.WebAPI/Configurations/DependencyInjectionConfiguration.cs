@@ -30,7 +30,7 @@ namespace LilySimple.Configurations
 
             builder.RegisterAssemblyTypes(assemblies.ToArray())
                 .Where(t => typeof(ServiceBase).IsAssignableFrom(t) && !t.IsAbstract)
-                .AsImplementedInterfaces()
+                .AsSelf()
                 .InstancePerLifetimeScope();
         }
     }

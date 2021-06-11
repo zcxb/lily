@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Autofac;
 using LilySimple.Configurations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,6 +29,8 @@ namespace LilySimple
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCustomJwtBearerAuthentication(Configuration);
+            services.AddCustomSwagger();
             services.AddControllers();
         }
 
@@ -40,22 +43,17 @@ namespace LilySimple
             }
 
             app.UseIocManager();
-
             app.UseRouting();
-
-            app.UseCors();
+            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseCustomMiddlewares();
+            app.UseCustomEndpoints(Configuration);
+        }
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
-            });
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterModule(new ApplicationModule());
         }
     }
 }

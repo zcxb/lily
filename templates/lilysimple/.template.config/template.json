@@ -7,7 +7,7 @@
     "name": "LilySimple",
     "identity": "LilySimple",
     "groupIdentity": "LilySimple", 
-    "shortName": "LilySimple",
+    "shortName": "lilysimple",
     "tags": {
         "language": "C#",
         "type": "project"

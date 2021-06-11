@@ -18,15 +18,6 @@ namespace LilySimple.ViewModels
         }
     }
 
-    public class Pager
-    {
-        [ModelBinder(Name = "page")]
-        public int Page { get; set; } = 1;
-
-        [ModelBinder(Name = "page_size")]
-        public int PageSize { get; set; } = 20;
-    }
-
     public class Flag
     {
         [JsonPropertyName("success")]
@@ -52,17 +43,36 @@ namespace LilySimple.ViewModels
     {
         [JsonPropertyName("data")]
         public T Data { get; set; }
+
+        public void SetSuccess(T data, string msg = "ok")
+        {
+            base.SetSuccess(msg);
+            Data = data;
+        }
     }
 
     public class Listed<T> : Flag
     {
         [JsonPropertyName("items")]
         public IEnumerable<T> Items { get; set; }
+
+        public void SetSuccess(IEnumerable<T> items, string msg = "ok")
+        {
+            base.SetSuccess(msg);
+            Items = items;
+        }
     }
 
     public class Paginated<T> : Listed<T>
     {
         [JsonPropertyName("count")]
-        public int Count { get; set; }
+        public long Count { get; set; }
+
+        public void SetSuccess(IEnumerable<T> items, long count, string msg = "ok")
+        {
+            base.SetSuccess(msg);
+            Items = items;
+            Count = count;
+        }
     }
 }

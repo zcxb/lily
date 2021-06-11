@@ -1,5 +1,5 @@
 <Project>
  <PropertyGroup>
-   <MicrosoftPackageVersion>3.0.*</MicrosoftPackageVersion>
+   <MicrosoftPackageVersion>3.0.0</MicrosoftPackageVersion>
  </PropertyGroup>
 </Project>

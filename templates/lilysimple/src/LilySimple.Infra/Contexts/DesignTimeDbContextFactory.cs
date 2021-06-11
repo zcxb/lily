@@ -6,13 +6,13 @@ using System.Text;
 
 namespace LilySimple.Contexts
 {
-    public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<LilySimpleDbContext>
+    public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<DefaultDbContext>
     {
-        public LilySimpleDbContext CreateDbContext(string[] args)
+        public DefaultDbContext CreateDbContext(string[] args)
         {
-            var builder = new DbContextOptionsBuilder<LilySimpleDbContext>();
+            var builder = new DbContextOptionsBuilder<DefaultDbContext>();
             builder.UseMySql("Server=localhost; Port=3306; Database=LilySimple; Uid=root; Pwd=123456;");
-            return new LilySimpleDbContext(builder.Options);
+            return new DefaultDbContext(builder.Options);
         }
     }
 }

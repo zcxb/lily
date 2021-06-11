@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace LilySimple.EntityFramework
+namespace LilySimple.EntityFrameworkCore
 {
     public static class EntityExtensions
     {

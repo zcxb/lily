@@ -1,4 +1,4 @@
-﻿using LilySimple.EntityFramework;
+﻿using LilySimple.EntityFrameworkCore;
 using LilySimple.Models;
 using Microsoft.EntityFrameworkCore;
 using System;

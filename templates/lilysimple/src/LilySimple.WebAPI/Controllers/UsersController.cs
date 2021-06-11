@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LilySimple.Enums;
 using LilySimple.Services;
+using LilySimple.Services.User;
 using LilySimple.Settings;
 using LilySimple.ViewModels;
 using LilySimple.ViewModels.User;
@@ -72,6 +73,19 @@ namespace LilySimple.Controllers
                 };
             }
 
+            return Ok(response);
+        }
+
+
+        /// <summary>
+        /// 修改密码
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost("change-password")]
+        public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
+        {
+            var response = await _userService.ChangePassword(UserId, request.OldPassword, request.NewPassword);
             return Ok(response);
         }
     }

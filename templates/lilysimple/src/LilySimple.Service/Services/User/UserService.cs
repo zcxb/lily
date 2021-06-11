@@ -1,4 +1,5 @@
-﻿using LilySimple.Enums;
+﻿using LilySimple.EntityFrameworkCore;
+using LilySimple.Enums;
 using LilySimple.Models;
 using Microsoft.Extensions.Logging;
 using System;
@@ -7,8 +8,9 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using UserModel = LilySimple.Models.User;
 
-namespace LilySimple.Services
+namespace LilySimple.Services.User
 {
     public class UserService : ServiceBase
     {
@@ -32,7 +34,7 @@ namespace LilySimple.Services
                     return;
                 }
 
-                var model = new User
+                var model = new UserModel
                 {
                     UserName = adminUserName,
                     PasswordHash = BCrypt.Net.BCrypt.HashPassword(adminPassword)
@@ -69,6 +71,31 @@ namespace LilySimple.Services
             {
                 return Task.FromResult((UserLoginStatus.WrongPassword, claims.ToArray()));
             }
+        }
+
+        public Task<Flag> ChangePassword(int userId, string oldPassword, string newPassword)
+        {
+            var result = new Flag();
+
+            var entity = Db.Users.GetById(userId);
+            if (entity == null)
+            {
+                result.SetError("用户不存在");
+            }
+            else if (!BCrypt.Net.BCrypt.Verify(oldPassword, entity.PasswordHash))
+            {
+                result.SetError("旧密码错误");
+            }
+            else
+            {
+                entity.ChangePassword(BCrypt.Net.BCrypt.HashPassword(newPassword));
+                if (Db.SaveChanges() > 0)
+                {
+                    result.SetSuccess();
+                }
+            }
+
+            return Task.FromResult(result);
         }
     }
 }

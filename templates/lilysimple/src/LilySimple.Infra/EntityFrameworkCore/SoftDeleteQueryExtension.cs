@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 
-namespace LilySimple.EntityFramework
+namespace LilySimple.EntityFrameworkCore
 {
     public static class SoftDeleteQueryExtension
     {

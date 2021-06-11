@@ -60,7 +60,7 @@ namespace LilySimple
             app.UseCustomMiddlewares();
             app.UseCustomEndpoints(Configuration);
             app.InitDatabase(Configuration);
-            app.UseHangfireBackgroudJobs(backgroundJobClient);
+            app.UseHangfireBackgroundJobs(backgroundJobClient);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

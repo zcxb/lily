@@ -26,7 +26,7 @@ namespace LilySimple.Configurations
             return services;
         }
 
-        public static IApplicationBuilder UseHangfireBackgroudJobs(this IApplicationBuilder app, IBackgroundJobClient backgroundJobClient)
+        public static IApplicationBuilder UseHangfireBackgroundJobs(this IApplicationBuilder app, IBackgroundJobClient backgroundJobClient)
         {
             backgroundJobClient.Enqueue(() =>
             app.ApplicationServices.GetService<UserService>().InitializeAdmin());

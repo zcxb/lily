@@ -1,6 +1,17 @@
 # LilySimple
 
-## DesignTime EFCore Migration 
+## Features
+
+- Soft Deletion in entity model base
+- Database schema auto init at first time run
+- JwtBearer Authentication
+- Swagger Doc
+- Hangfire for background jobs
+- Auto registration for all business services
+- Global exception handler
+- Request logs
+
+## DesignTime EFCore Migration
 
 ```powershell
 cd .\src\LilySimple.Infra

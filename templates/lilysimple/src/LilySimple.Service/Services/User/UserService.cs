@@ -1,5 +1,5 @@
 ﻿using LilySimple.EntityFrameworkCore;
-using LilySimple.Enums;
+using LilySimple.Shared.Enums;
 using LilySimple.Models;
 using Microsoft.Extensions.Logging;
 using System;

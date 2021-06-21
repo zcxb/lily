@@ -30,6 +30,7 @@ namespace LilySimple
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMiniProfiler().AddEntityFramework();
             services.AddDefaultDbContext(Configuration);
             services.AddCustomJwtBearerAuthentication(Configuration);
             services.AddCustomSwagger();
@@ -57,6 +58,7 @@ namespace LilySimple
             app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseMiniProfiler(); 
             app.UseCustomMiddlewares();
             app.UseCustomEndpoints(Configuration);
             app.InitDatabase(Configuration);

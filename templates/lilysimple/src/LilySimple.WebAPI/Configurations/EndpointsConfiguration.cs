@@ -12,6 +12,10 @@ namespace LilySimple.Configurations
         public static IApplicationBuilder UseCustomEndpoints(this IApplicationBuilder app, IConfiguration configuration)
         {
             var useSwagger = bool.TryParse(configuration["Swagger:Enabled"], out var swaggerEnabled) && swaggerEnabled;
+            if (useSwagger)
+            {
+                app.UseCustomSwagger();
+            }
             app.UseEndpoints(endpoints =>
             {
                 if (useSwagger)
@@ -24,11 +28,6 @@ namespace LilySimple.Configurations
                 }
                 endpoints.MapControllers();
             });
-
-            if (useSwagger)
-            {
-                app.UseCustomSwagger();
-            }
 
             return app;
         }

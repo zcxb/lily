@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace LilySimple.Configurations
@@ -64,6 +65,7 @@ namespace LilySimple.Configurations
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
+                c.IndexStream = () => typeof(Startup).GetTypeInfo().Assembly.GetManifestResourceStream("LilySimple.Assets.SwaggerIndex.html");
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
             });
 

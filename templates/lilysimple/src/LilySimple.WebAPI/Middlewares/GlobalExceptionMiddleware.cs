@@ -41,6 +41,11 @@ namespace LilySimple.Middlewares
                     Msg = "An unknown error occurred.",
                 };
 
+                if (ex is BizException bex)
+                {
+                    response.Msg = bex.Message;
+                }
+
                 context.Response.StatusCode = StatusCodes.Status200OK;
                 context.Response.ContentType = "application/json;charset=utf-8";
                 await context.Response.WriteAsync(System.Text.Json.JsonSerializer.Serialize(response));

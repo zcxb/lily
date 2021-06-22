@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using LilySimple.Enums;
+﻿using LilySimple.Extensions;
 using LilySimple.Services;
 using LilySimple.Services.User;
 using LilySimple.Settings;
-using LilySimple.ViewModels;
+using LilySimple.Shared.Enums;
 using LilySimple.ViewModels.User;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace LilySimple.Controllers
 {
@@ -85,7 +82,7 @@ namespace LilySimple.Controllers
         [HttpPost("change-password")]
         public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
         {
-            var response = await _userService.ChangePassword(UserId, request.OldPassword, request.NewPassword);
+            var response = await _userService.ChangePassword(User.GetUserId(), request.OldPassword, request.NewPassword);
             return Ok(response);
         }
     }

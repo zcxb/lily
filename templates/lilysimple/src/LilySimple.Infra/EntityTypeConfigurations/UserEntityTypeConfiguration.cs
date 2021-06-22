@@ -15,7 +15,7 @@ namespace LilySimple.EntityTypeConfigurations
         {
             base.Configure(builder);
 
-            builder.ToTable("users");
+            builder.ToTable("user");
 
             builder.Property(m => m.UserName)
                 .HasColumnName("username")

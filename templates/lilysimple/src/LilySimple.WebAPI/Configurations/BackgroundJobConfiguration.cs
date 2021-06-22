@@ -30,7 +30,7 @@ namespace LilySimple.Configurations
         public static IApplicationBuilder UseHangfireBackgroundJobs(this IApplicationBuilder app, IBackgroundJobClient backgroundJobClient)
         {
             backgroundJobClient.Enqueue(() =>
-            app.ApplicationServices.GetService<UserService>().InitializeAdmin());
+            app.ApplicationServices.GetService<UserService>().InitializeAdminUser());
 
             return app;
         }

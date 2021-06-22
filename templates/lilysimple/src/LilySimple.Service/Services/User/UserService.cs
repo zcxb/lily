@@ -1,12 +1,10 @@
 ﻿using LilySimple.EntityFrameworkCore;
-using LilySimple.Enums;
-using LilySimple.Models;
+using LilySimple.Shared.Enums;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using UserModel = LilySimple.Models.User;
 
@@ -21,7 +19,7 @@ namespace LilySimple.Services.User
             _logger = logger;
         }
 
-        public void InitializeAdmin()
+        public void InitializeAdminUser()
         {
             var adminUserName = Configuration["AdminInit:UserName"] ?? "admin";
             var adminPassword = Configuration["AdminInit:Password"] ?? "123456";
@@ -65,6 +63,7 @@ namespace LilySimple.Services.User
             if (isValid)
             {
                 claims.Add(new Claim("sub", entity.Id.ToString()));
+                claims.Add(new Claim("username", entity.UserName));
                 return Task.FromResult((UserLoginStatus.Success, claims.ToArray()));
             }
             else
@@ -97,5 +96,10 @@ namespace LilySimple.Services.User
 
             return Task.FromResult(result);
         }
+
+        //public Task<Wrapped<Object>> GetUserProfile()
+        //{
+
+        //}
     }
 }

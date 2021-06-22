@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace LilySimple.Enums
+namespace LilySimple.Shared.Enums
 {
     public enum Gender : int
     {

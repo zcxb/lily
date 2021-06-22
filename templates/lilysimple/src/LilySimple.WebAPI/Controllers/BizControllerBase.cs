@@ -3,26 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using LilySimple.Autofac;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace LilySimple.Controllers
 {
     [Authorize]
     public class BizControllerBase : ControllerBase
     {
-        protected int UserId
+        protected readonly IConfiguration Configuration;
+
+        public BizControllerBase()
         {
-            get
-            {
-                var userIdOrNull = User.Claims?.FirstOrDefault(i => i.Type == ClaimTypes.NameIdentifier);
-                if (int.TryParse(userIdOrNull?.Value, out int result))
-                {
-                    return result;
-                }
-                return 0;
-            }
+            Configuration = IocManager.Instance.GetService<IConfiguration>();
         }
     }
 }

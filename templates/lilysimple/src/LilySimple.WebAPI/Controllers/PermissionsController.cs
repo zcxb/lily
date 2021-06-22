@@ -36,7 +36,7 @@ namespace LilySimple.Controllers
                     var tree = await _privilegeService.GetPermissionTree();
                     return Ok(tree);
                 default:
-                    var list = await _privilegeService.GetPermissionList();
+                    var list = await _privilegeService.GetPermissionList(request.Page, request.PageSize);
                     return Ok(list);
             }
         }
@@ -48,9 +48,10 @@ namespace LilySimple.Controllers
         }
 
         [HttpPost]
-        public async Task CreatePermission([FromBody] PermissionCreateRequest request)
+        public async Task<ActionResult> CreatePermission([FromBody] PermissionCreateRequest request)
         {
-
+            var result = await _privilegeService.CreatePermission(request.Name, request.Code, request.Path, request.Type, request.ParentId);
+            return Ok(result);
         }
 
         [HttpPut]

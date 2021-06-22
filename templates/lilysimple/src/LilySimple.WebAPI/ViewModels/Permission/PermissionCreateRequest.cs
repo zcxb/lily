@@ -24,6 +24,9 @@ namespace LilySimple.ViewModels.Permission
         [JsonPropertyName("path")]
         public string Path { get; set; }
 
+        [JsonPropertyName("pid")]
+        public int ParentId { get; set; }
+
         /// <summary>
         /// 权限类型：resource/action
         /// </summary>

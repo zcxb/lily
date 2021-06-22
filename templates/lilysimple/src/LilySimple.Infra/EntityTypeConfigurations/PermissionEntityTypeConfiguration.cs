@@ -38,8 +38,7 @@ namespace LilySimple.EntityTypeConfigurations
 
             builder.Property(m => m.Type)
                 .HasColumnName("type")
-                .IsRequired()
-                .HasMaxLength(32);
+                .IsRequired();
         }
     }
 }

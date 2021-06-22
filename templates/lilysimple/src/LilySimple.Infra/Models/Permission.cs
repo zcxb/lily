@@ -12,6 +12,8 @@ namespace LilySimple.Models
 
         public string Code { get; set; }
 
-        public int Type { get; set; }
+        public int ParentId { get; set; }
+
+        public string Type { get; set; }
     }
 }

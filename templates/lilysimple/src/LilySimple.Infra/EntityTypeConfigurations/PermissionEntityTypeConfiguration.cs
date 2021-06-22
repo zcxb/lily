@@ -24,15 +24,22 @@ namespace LilySimple.EntityTypeConfigurations
 
             builder.Property(m => m.Code)
                 .HasColumnName("code")
+                .IsRequired()
                 .HasMaxLength(255);
 
             builder.Property(m => m.Path)
                 .HasColumnName("path")
                 .HasMaxLength(255);
 
+            builder.Property(m => m.ParentId)
+                .HasColumnName("pid")
+                .IsRequired()
+                .HasDefaultValue(0);
+
             builder.Property(m => m.Type)
                 .HasColumnName("type")
-                .IsRequired();
+                .IsRequired()
+                .HasMaxLength(32);
         }
     }
 }

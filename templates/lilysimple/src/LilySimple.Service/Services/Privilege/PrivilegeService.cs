@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using LilySimple.DataStructure.Tree;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,12 +17,12 @@ namespace LilySimple.Services.Privilege
             _logger = logger;
         }
 
-        public async Task<bool> CheckPermission(int userId, string permissionName)
+        public Task<bool> CheckPermission(int userId, string permissionName)
         {
             var roles = Db.UserRoles.Where(i => i.UserId == userId).Select(i => i.RoleId).ToList();
             if (roles.IsNullOrEmpty())
             {
-                return false;
+                return Task.FromResult(false);
             }
 
             var permission = Db.Permissions.Where(i => i.Code == permissionName);
@@ -29,7 +30,28 @@ namespace LilySimple.Services.Privilege
                 .Join(permission, rp => rp.PermissionId, p => p.Id, (rp, p) => p)
                 .Any();
 
-            return result;
+            return Task.FromResult(result);
+        }
+
+        public Task<Listed<PermissionNodeResponse>> GetPermissionTree()
+        {
+            var permissions = Db.Permissions.Select(i => new PermissionNodeResponse
+            {
+                Id = i.Id,
+                Name = i.Name,
+                ParentId = i.ParentId,
+            }).ToList().BuildTree();
+            var response = new Listed<PermissionNodeResponse>();
+            response.SetSuccess(permissions);
+
+            return Task.FromResult(response);
+        }
+
+        public Task<Paginated<PermissionEntityResponse>> GetPermissionList()
+        {
+            var response = new Paginated<PermissionEntityResponse>();
+
+            return Task.FromResult(response);
         }
     }
 }

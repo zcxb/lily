@@ -27,6 +27,7 @@ namespace LilySimple.Authorizations
             if (user.IsAdmin())
             {
                 context.Succeed(requirement);
+                return;
             }
 
             var userId = user.GetUserId();
@@ -41,7 +42,6 @@ namespace LilySimple.Authorizations
                     userId, requirement.Name);
                 context.Fail();
             }
-
             return;
         }
     }

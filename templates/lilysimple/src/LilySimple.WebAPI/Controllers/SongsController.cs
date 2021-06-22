@@ -12,8 +12,8 @@ namespace LilySimple.Controllers
     public class SongsController : BizControllerBase
     {
         [HttpGet]
-        [Permission("action1")]
-        public async Task<ActionResult> Action1()
+        [Permission("song-list")]
+        public async Task<ActionResult> GetSongs()
         {
             throw new NotImplementedException();
         }

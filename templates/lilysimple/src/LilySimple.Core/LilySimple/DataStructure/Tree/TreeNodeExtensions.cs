@@ -12,17 +12,15 @@ namespace LilySimple.DataStructure.Tree
         {
             var roots = items.Where(i => !items.Select(x => x.Id).Contains(i.ParentId));
 
-            foreach (var root in roots)
+            foreach (T root in roots)
             {
                 root.Children = FindChildren(root, items);
             }
 
             IEnumerable<T> FindChildren(T node, IEnumerable<T> rest)
             {
-                // TODO: 优化
-
                 var children = rest.Where(i => i.ParentId == node.Id);
-                foreach (var child in children)
+                foreach (T child in children)
                 {
                     child.Children = FindChildren(child, items);
                 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace LilySimple.DataStructure.Tree
 {
-    public abstract class TreeNode
+    public class TreeNode
     {
         public virtual int Id { get; set; }
 

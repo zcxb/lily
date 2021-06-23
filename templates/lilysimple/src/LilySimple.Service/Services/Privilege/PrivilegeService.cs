@@ -41,7 +41,10 @@ namespace LilySimple.Services.Privilege
             {
                 Id = i.Id,
                 Name = i.Name,
+                Code = i.Code,
+                Path = i.Path,
                 ParentId = i.ParentId,
+                Type = ((PermissionType)i.Type).GetDescription(),
             }).ToList().BuildTree();
             var response = new Listed<PermissionNodeResponse>();
             response.SetSuccess(permissions);
@@ -61,8 +64,8 @@ namespace LilySimple.Services.Privilege
                 Id = i.Id,
                 Name = i.Name,
                 Code = i.Code,
-                ParentId = i.ParentId,
                 Path = i.Path,
+                ParentId = i.ParentId,
                 Type = ((PermissionType)i.Type).GetDescription(),
             }), count);
             return Task.FromResult(response);

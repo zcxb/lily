@@ -1,5 +1,8 @@
 ﻿using LilySimple.Authorizations;
+using LilySimple.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -25,7 +28,8 @@ namespace LilySimple.Authorizations
             var result = await service.AuthorizeAsync(context.HttpContext.User, null, new PermissionAuthorizationRequirement(Name));
             if (!result.Succeeded)
             {
-                throw new BizException("You are not allowed to access the resource or action!");
+                context.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
+                context.Result = new JsonResult(new Flag().Fail("Permission denied!"));
             }
         }
     }

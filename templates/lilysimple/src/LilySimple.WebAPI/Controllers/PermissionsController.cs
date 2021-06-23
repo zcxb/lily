@@ -28,6 +28,7 @@ namespace LilySimple.Controllers
         /// <param name="format">数据格式：tree/list</param>
         /// <returns></returns>
         [HttpGet]
+        [Permission("permission-list")]
         public async Task<ActionResult> GetPermissions([FromQuery] PermissionQueryRequest request, string format)
         {
             switch (format)
@@ -48,6 +49,7 @@ namespace LilySimple.Controllers
         }
 
         [HttpPost]
+        [Permission("permission-create")]
         public async Task<ActionResult> CreatePermission([FromBody] PermissionCreateRequest request)
         {
             var result = await _privilegeService.CreatePermission(request.Name, request.Code, request.Path, request.Type, request.ParentId);

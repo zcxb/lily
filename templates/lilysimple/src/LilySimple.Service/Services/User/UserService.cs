@@ -79,18 +79,18 @@ namespace LilySimple.Services.User
             var entity = Db.Users.GetById(userId);
             if (entity == null)
             {
-                result.SetError("用户不存在");
+                result.Fail("用户不存在");
             }
             else if (!BCrypt.Net.BCrypt.Verify(oldPassword, entity.PasswordHash))
             {
-                result.SetError("旧密码错误");
+                result.Fail("旧密码错误");
             }
             else
             {
                 entity.ChangePassword(BCrypt.Net.BCrypt.HashPassword(newPassword));
                 if (Db.SaveChanges() > 0)
                 {
-                    result.SetSuccess();
+                    result.Succeed();
                 }
             }
 

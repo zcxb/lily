@@ -26,16 +26,18 @@ namespace LilySimple.Services
         [JsonPropertyName("msg")]
         public string Msg { get; set; }
 
-        public void SetSuccess(string msg = "ok")
+        public Flag Succeed(string msg = "ok")
         {
             Success = true;
             Msg = msg;
+            return this;
         }
 
-        public void SetError(string msg)
+        public Flag Fail(string msg)
         {
             Success = false;
             Msg = msg;
+            return this;
         }
     }
 
@@ -44,10 +46,11 @@ namespace LilySimple.Services
         [JsonPropertyName("data")]
         public T Data { get; set; }
 
-        public void SetSuccess(T data, string msg = "ok")
+        public Wrapped<T> Succeed(T data, string msg = "ok")
         {
-            base.SetSuccess(msg);
+            base.Succeed(msg);
             Data = data;
+            return this;
         }
     }
 
@@ -56,10 +59,11 @@ namespace LilySimple.Services
         [JsonPropertyName("items")]
         public IEnumerable<T> Items { get; set; }
 
-        public void SetSuccess(IEnumerable<T> items, string msg = "ok")
+        public Listed<T> Succeed(IEnumerable<T> items, string msg = "ok")
         {
-            base.SetSuccess(msg);
+            base.Succeed(msg);
             Items = items;
+            return this;
         }
     }
 
@@ -68,11 +72,12 @@ namespace LilySimple.Services
         [JsonPropertyName("count")]
         public long Count { get; set; }
 
-        public void SetSuccess(IEnumerable<T> items, long count, string msg = "ok")
+        public Paginated<T> Succeed(IEnumerable<T> items, long count, string msg = "ok")
         {
-            base.SetSuccess(msg);
+            base.Succeed(msg);
             Items = items;
             Count = count;
+            return this;
         }
     }
 }

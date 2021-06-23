@@ -47,7 +47,7 @@ namespace LilySimple.Services.Privilege
                 Type = ((PermissionType)i.Type).GetDescription(),
             }).ToList().BuildTree();
             var response = new Listed<PermissionNodeResponse>();
-            response.SetSuccess(permissions);
+            response.Succeed(permissions);
 
             return Task.FromResult(response);
         }
@@ -59,7 +59,7 @@ namespace LilySimple.Services.Privilege
             var entities = query.PageByNumber(page, pageSize).ToList();
             var count = query.Count();
 
-            response.SetSuccess(entities.Select(i => new PermissionEntityResponse
+            response.Succeed(entities.Select(i => new PermissionEntityResponse
             {
                 Id = i.Id,
                 Name = i.Name,
@@ -80,7 +80,7 @@ namespace LilySimple.Services.Privilege
 
             if (Db.SaveChanges() > 0)
             {
-                response.SetSuccess(new Id(entity.Id));
+                response.Succeed(new Id(entity.Id));
             }
 
             return Task.FromResult(response);

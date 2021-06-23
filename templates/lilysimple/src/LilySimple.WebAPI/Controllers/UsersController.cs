@@ -57,17 +57,16 @@ namespace LilySimple.Controllers
             if (status == UserLoginStatus.AccountNotFound
                 || status == UserLoginStatus.WrongPassword)
             {
-                response.SetError("wrong account or password");
+                response.Fail("wrong account or password");
             }
             else
             {
                 var accessToken = GenerateJwtToken(claims);
-                response.SetSuccess();
-                response.Data = new UserLoginResponse
+                response.Succeed(new UserLoginResponse
                 {
                     AccessToken = accessToken,
                     ExpiresIn = _jwtBearerSetting.Expires,
-                };
+                });
             }
 
             return Ok(response);

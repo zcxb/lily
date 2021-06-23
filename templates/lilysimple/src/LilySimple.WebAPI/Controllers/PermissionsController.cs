@@ -22,7 +22,7 @@ namespace LilySimple.Controllers
         }
 
         /// <summary>
-        /// 
+        /// 权限列表/树
         /// </summary>
         /// <param name="request"></param>
         /// <param name="format">数据格式：tree/list</param>
@@ -37,35 +37,58 @@ namespace LilySimple.Controllers
                     var tree = await _privilegeService.GetPermissionTree();
                     return Ok(tree);
                 default:
-                    var list = await _privilegeService.GetPermissionList(request.Page, request.PageSize);
+                    var list = await _privilegeService.GetPermissionList(
+                        request.Page, request.PageSize);
                     return Ok(list);
             }
         }
 
         [HttpGet("{id:int:min(1)}")]
-        public async Task GetPermissionById([FromRoute] int id)
+        public async Task<ActionResult> GetPermissionById([FromRoute] int id)
         {
-
+            var result = await _privilegeService.GetPermissionById(id);
+            return Ok(result);
         }
 
+        /// <summary>
+        /// 添加权限
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost]
         [Permission("permission-create")]
         public async Task<ActionResult> CreatePermission([FromBody] PermissionCreateRequest request)
         {
-            var result = await _privilegeService.CreatePermission(request.Name, request.Code, request.Path, request.Type, request.ParentId);
+            var result = await _privilegeService.CreatePermission(
+                request.Name, request.Code, request.Path, request.ParentId, request.Type);
             return Ok(result);
         }
 
+        /// <summary>
+        /// 修改权限
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPut]
-        public async Task ModifyPermission([FromBody] PermissionModifyRequest request)
+        [Permission("permission-modify")]
+        public async Task<ActionResult> ModifyPermission([FromBody] PermissionModifyRequest request)
         {
-
+            var result = await _privilegeService.ModifyPermission(request.Id,
+                request.Name, request.Code, request.Path, request.ParentId, request.Type);
+            return Ok(result);
         }
 
+        /// <summary>
+        /// 删除权限
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id:int:min(1)}")]
-        public async Task DeletePermission([FromRoute] int id)
+        [Permission("permission-delete")]
+        public async Task<ActionResult> DeletePermission([FromRoute] int id)
         {
-
+            var result = await _privilegeService.DeletePermission(id);
+            return Ok(result);
         }
     }
 }

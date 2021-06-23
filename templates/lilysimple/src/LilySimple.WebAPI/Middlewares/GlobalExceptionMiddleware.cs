@@ -35,15 +35,11 @@ namespace LilySimple.Middlewares
                     context.TraceIdentifier,
                     context.Request.Method,
                     context.Request.Path);
-                var response = new Flag
-                {
-                    Success = false,
-                    Msg = "An unknown error occurred.",
-                };
+                var response = new Flag().Fail("An unknown error occurred.");
 
                 if (ex is BizException bex)
                 {
-                    response.Msg = bex.Message;
+                    response.Fail(bex.Message);
                 }
 
                 context.Response.StatusCode = StatusCodes.Status200OK;

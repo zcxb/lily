@@ -15,13 +15,13 @@ namespace LilySimple.Configurations
         public static IServiceCollection AddDefaultDbContext(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddEntityFrameworkMySql()
-                .AddDbContext<DefaultDbContext>(options =>
+                .AddDbContextPool<DefaultDbContext>(options =>
                 {
                     options.UseMySql(configuration.GetConnectionString("Default"),
                         sqlOptions =>
                         {
                             sqlOptions.MigrationsAssembly(typeof(DefaultDbContext).Assembly.FullName);
-                            sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+                            //sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
                         });
                 });
 

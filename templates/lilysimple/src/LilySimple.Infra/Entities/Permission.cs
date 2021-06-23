@@ -28,5 +28,14 @@ namespace LilySimple.Entities
                 Type = type.GetHashCode(),
             };
         }
+
+        public void Modify(string name, string code, string path, int parentId, PermissionType type)
+        {
+            Name = name;
+            Code = code;
+            Path = path;
+            ParentId = parentId;
+            Type = type.GetHashCode();
+        }
     }
 }

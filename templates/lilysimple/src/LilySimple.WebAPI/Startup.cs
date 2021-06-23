@@ -36,7 +36,7 @@ namespace LilySimple
             services.AddCustomJwtBearerAuthentication(Configuration);
             services.AddCustomSwagger();
             services.AddHangfireBackgroundJobs();
-            services.AddControllers();
+            services.AddControllers().AddCustomJsonOptions();
             services.AddRouting(options =>
             {
                 options.LowercaseUrls = true;
@@ -45,7 +45,7 @@ namespace LilySimple
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(
-            IApplicationBuilder app, 
+            IApplicationBuilder app,
             IWebHostEnvironment env,
             IBackgroundJobClient backgroundJobClient)
         {
@@ -59,7 +59,7 @@ namespace LilySimple
             app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseMiniProfiler(); 
+            app.UseMiniProfiler();
             app.UseCustomMiddlewares();
             app.UseCustomEndpoints(Configuration);
             app.InitDatabase(Configuration);

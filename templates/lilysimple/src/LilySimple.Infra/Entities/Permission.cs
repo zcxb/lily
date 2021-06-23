@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace LilySimple.Models
+namespace LilySimple.Entities
 {
     public class Permission : ModelBase
     {

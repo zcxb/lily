@@ -1,4 +1,4 @@
-﻿using LilySimple.Models;
+﻿using LilySimple.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

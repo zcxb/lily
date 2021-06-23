@@ -1,7 +1,7 @@
 ﻿using LilySimple.Authorizations;
 using LilySimple.Services.Privilege;
 using LilySimple.Shared.Consts;
-using LilySimple.ViewModels.Permission;
+using LilySimple.Models.Permission;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;

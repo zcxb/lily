@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LilySimple.ViewModels.Permission
+namespace LilySimple.Models.Permission
 {
     public class PermissionQueryRequest : Pager
     {

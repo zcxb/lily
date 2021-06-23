@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace LilySimple.ViewModels.User
+namespace LilySimple.Models.User
 {
     public class UserLoginResponse
     {

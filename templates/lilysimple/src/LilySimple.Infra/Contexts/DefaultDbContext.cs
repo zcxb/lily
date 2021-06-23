@@ -1,5 +1,5 @@
 ﻿using LilySimple.EntityFrameworkCore;
-using LilySimple.Models;
+using LilySimple.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

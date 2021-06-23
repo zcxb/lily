@@ -3,7 +3,7 @@ using LilySimple.Services;
 using LilySimple.Services.User;
 using LilySimple.Settings;
 using LilySimple.Shared.Enums;
-using LilySimple.ViewModels.User;
+using LilySimple.Models.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;

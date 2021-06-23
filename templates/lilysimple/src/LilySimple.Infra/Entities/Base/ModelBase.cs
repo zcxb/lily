@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace LilySimple.Models
+namespace LilySimple.Entities
 {
     public class ModelBase : ISoftDelete
     {

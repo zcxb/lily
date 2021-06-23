@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using UserModel = LilySimple.Models.User;
+using UserModel = LilySimple.Entities.User;
 
 namespace LilySimple.Services.User
 {

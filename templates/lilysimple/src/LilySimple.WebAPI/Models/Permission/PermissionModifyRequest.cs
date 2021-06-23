@@ -6,26 +6,24 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace LilySimple.ViewModels.Permission
+namespace LilySimple.Models.Permission
 {
-    public class PermissionCreateRequest
+    public class PermissionModifyRequest
     {
+        [Required]
+        [JsonPropertyName("id")]
+        public int Id { get; set; }
+
         [Required]
         [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        /// <summary>
-        /// 权限code，由后端接口指定
-        /// </summary>
         [Required]
         [JsonPropertyName("code")]
         public string Code { get; set; }
 
         [JsonPropertyName("path")]
         public string Path { get; set; }
-
-        [JsonPropertyName("pid")]
-        public int ParentId { get; set; }
 
         /// <summary>
         /// 权限类型：resource/action

@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace LilySimple.Models
+namespace LilySimple.Entities
 {
-    public class UserRole : ModelBase
+    public class RolePermission : ModelBase
     {
-        public int UserId { get; set; }
-
         public int RoleId { get; set; }
+
+        public int PermissionId { get; set; }
     }
 }

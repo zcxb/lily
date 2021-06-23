@@ -14,7 +14,7 @@ namespace LilySimple.JsonConverters
             if (reader.TokenType == JsonTokenType.Number)
             {
                 long timestamp = long.Parse(reader.GetDecimal() + "0000000"); // 与移动端约定以秒为单位
-                return timestamp.ToDateTime();
+                return timestamp.ToDateTime(TimeZoneInfo.Local);
             }
 
             return reader.GetDateTime();
@@ -24,7 +24,7 @@ namespace LilySimple.JsonConverters
         {
             if (!default(DateTime).Equals(value))
             {
-                long timestamp = value.ToTimestamp() / 10000000;// 与移动端约定以秒为单位
+                long timestamp = value.ToTimestamp(TimeZoneInfo.Local) / 10000000;// 与移动端约定以秒为单位
                 writer.WriteNumberValue((decimal)timestamp);
                 return;
             }

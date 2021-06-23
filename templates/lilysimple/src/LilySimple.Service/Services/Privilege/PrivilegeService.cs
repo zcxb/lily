@@ -195,15 +195,21 @@ namespace LilySimple.Services.Privilege
             try
             {
                 var roleEntity = Db.Roles.GetById(id);
-                var oldPermissions = Db.RolePermissions.Where(i => i.RoleId == id).Select(i => i.PermissionId).ToList();
-                roleEntity.Modify(name);
-                Db.SaveChanges();
-                Db.RolePermissions.RemoveRange(oldPermissions.Except(permissions).ToArray());
-                Db.SaveChanges();
-                var newPermissions = permissions.Except(oldPermissions).Select(i => RolePermission.Create(id, i));
-                Db.RolePermissions.AddRange(newPermissions);
-                Db.SaveChanges();
-
+                if (roleEntity == null)
+                {
+                    response.Fail("Role not exist");
+                }
+                else
+                {
+                    roleEntity.Modify(name);
+                    var oldPermissions = Db.RolePermissions.Where(i => i.RoleId == id).Select(i => i.PermissionId).ToList();
+                    Db.SaveChanges();
+                    Db.RolePermissions.RemoveRange(oldPermissions.Except(permissions).ToArray());
+                    Db.SaveChanges();
+                    var newPermissions = permissions.Except(oldPermissions).Select(i => RolePermission.Create(id, i));
+                    Db.RolePermissions.AddRange(newPermissions);
+                    Db.SaveChanges();
+                }
                 trans.Commit();
                 response.Succeed();
             }
@@ -212,6 +218,19 @@ namespace LilySimple.Services.Privilege
                 _logger.LogError(ex, ex.Message);
                 trans.Rollback();
                 response.Fail("Failed to modify role and permissions");
+            }
+
+            return Task.FromResult(response);
+        }
+
+        public Task<Flag> DeleteRole(int id)
+        {
+            var response = new Flag();
+
+            var entity = Db.Roles.GetById(id);
+            if (entity == null)
+            {
+                response.Fail("Role not exist");
             }
 
             return Task.FromResult(response);

@@ -46,5 +46,18 @@ namespace LilySimple.Controllers
             var result = await _privilegeService.ModifyRole(request.Id, request.Name, request.Permissions);
             return Ok(result);
         }
+
+        /// <summary>
+        /// 删除角色
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("{id:int:min(1)}")]
+        [Permission("role-delete")]
+        public async Task<ActionResult> DeleteRole([FromRoute] int id)
+        {
+            var result = await _privilegeService.DeleteRole(id);
+            return Ok(result);
+        }
     }
 }

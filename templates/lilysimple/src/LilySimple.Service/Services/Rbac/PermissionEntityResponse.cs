@@ -24,5 +24,8 @@ namespace LilySimple.Services.Rbac
 
         [JsonPropertyName("type")]
         public string Type { get; set; }
+
+        [JsonPropertyName("sort")]
+        public int Sort { get; set; }
     }
 }

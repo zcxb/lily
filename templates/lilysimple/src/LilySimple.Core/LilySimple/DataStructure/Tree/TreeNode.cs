@@ -12,4 +12,9 @@ namespace LilySimple.DataStructure.Tree
 
         public IEnumerable<TreeNode> Children { get; set; }
     }
+
+    public class SortableTreeNode : TreeNode
+    {
+        public virtual int Sort { get; set; }
+    }
 }

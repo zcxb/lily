@@ -35,7 +35,7 @@ namespace LilySimple.Areas.Rbac.Controllers
             switch (format)
             {
                 case ApiResponseFormat.Tree:
-                    var tree = await _privilegeService.GetPermissionTree();
+                    var tree = await _privilegeService.GetFullTreePermissions();
                     return Ok(tree);
                 default:
                     var list = await _privilegeService.GetPaginatedPermissions(
@@ -61,7 +61,7 @@ namespace LilySimple.Areas.Rbac.Controllers
         public async Task<ActionResult> CreatePermission([FromBody] PermissionCreateRequest request)
         {
             var result = await _privilegeService.CreatePermission(
-                request.Name, request.Code, request.Path, request.ParentId, request.Type);
+                request.Name, request.Code, request.Path, request.ParentId, request.Type, request.Sort);
             return Ok(result);
         }
 
@@ -75,7 +75,7 @@ namespace LilySimple.Areas.Rbac.Controllers
         public async Task<ActionResult> ModifyPermission([FromBody] PermissionModifyRequest request)
         {
             var result = await _privilegeService.ModifyPermission(request.Id,
-                request.Name, request.Code, request.Path, request.ParentId, request.Type);
+                request.Name, request.Code, request.Path, request.ParentId, request.Type, request.Sort);
             return Ok(result);
         }
 

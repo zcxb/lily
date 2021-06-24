@@ -34,5 +34,8 @@ namespace LilySimple.Models.Permission
         [Required]
         [JsonPropertyName("type")]
         public string Type { get; set; }
+
+        [JsonPropertyName("sort")]
+        public int Sort { get; set; }
     }
 }

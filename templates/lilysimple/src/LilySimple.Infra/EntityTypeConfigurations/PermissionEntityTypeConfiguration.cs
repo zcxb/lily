@@ -39,6 +39,11 @@ namespace LilySimple.EntityTypeConfigurations
             builder.Property(m => m.Type)
                 .HasColumnName("type")
                 .IsRequired();
+
+            builder.Property(m => m.Sort)
+                .HasColumnName("sort")
+                .IsRequired()
+                .HasDefaultValue(0);
         }
     }
 }

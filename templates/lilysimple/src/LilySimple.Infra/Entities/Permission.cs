@@ -17,7 +17,9 @@ namespace LilySimple.Entities
 
         public int Type { get; set; }
 
-        public static Permission Create(string name, string code, string path, int parentId, PermissionType type)
+        public int Sort { get; set; }
+
+        public static Permission Create(string name, string code, string path, int parentId, PermissionType type, int sort)
         {
             return new Permission
             {
@@ -26,16 +28,18 @@ namespace LilySimple.Entities
                 Path = path,
                 ParentId = parentId,
                 Type = type.GetHashCode(),
+                Sort = sort,
             };
         }
 
-        public void Modify(string name, string code, string path, int parentId, PermissionType type)
+        public void Modify(string name, string code, string path, int parentId, PermissionType type, int sort)
         {
             Name = name;
             Code = code;
             Path = path;
             ParentId = parentId;
             Type = type.GetHashCode();
+            Sort = sort;
         }
     }
 }

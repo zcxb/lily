@@ -113,7 +113,7 @@ namespace LilySimple.Services.User
             }
             else
             {
-                var permissions = _rbacService.GetUserPermissions(isAdmin ? 0 : userId);
+                var permissions = _rbacService.GetTreePermissions(isAdmin ? 0 : userId);
 
                 response.Succeed(new UserProfileResponse
                 {

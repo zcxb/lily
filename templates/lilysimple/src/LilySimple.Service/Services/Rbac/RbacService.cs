@@ -22,10 +22,10 @@ namespace LilySimple.Services.Rbac
             _logger = logger;
         }
 
-        public Task<Listed<PermissionNodeResponse>> GetPermissionTree()
+        public Task<Listed<PermissionNodeResponse>> GetFullTreePermissions()
         {
             var response = new Listed<PermissionNodeResponse>();
-            response.Succeed(GetUserPermissions());
+            response.Succeed(GetTreePermissions());
             return Task.FromResult(response);
         }
 
@@ -43,6 +43,7 @@ namespace LilySimple.Services.Rbac
                     Path = i.Path,
                     ParentId = i.ParentId,
                     Type = ((PermissionType)i.Type).GetDescription(),
+                    Sort = i.Sort,
                 }).ToList();
             var count = query.Count();
 
@@ -64,33 +65,44 @@ namespace LilySimple.Services.Rbac
             {
                 response.Succeed(new PermissionEntityResponse
                 {
-                    Id = id,
+                    Id = entity.Id,
                     Name = entity.Name,
                     Code = entity.Code,
                     Path = entity.Path,
                     ParentId = entity.ParentId,
                     Type = ((PermissionType)entity.Type).GetDescription(),
+                    Sort = entity.Sort,
                 });
             }
 
             return Task.FromResult(response);
         }
 
-        public Task<Wrapped<Id>> CreatePermission(string name, string code, string path, int parentId, string type)
+        public Task<Wrapped<Id>> CreatePermission(string name, string code, string path, int parentId, string type, int sort)
         {
             var response = new Wrapped<Id>();
-
-            var model = Permission.Create(name, code, path, parentId, type.ToEnumValue<PermissionType>());
-            var entity = Db.Permissions.Add(model).Entity;
-            if (Db.SaveChanges() > 0)
+            if (Db.Permissions.Any(p => p.Name == name || p.Code == code))
             {
-                response.Succeed(new Id(entity.Id));
+                response.Fail("Duplicated name or code");
+            }
+            else if (parentId > 0 && Db.Permissions.GetById(parentId) == null)
+            {
+                response.Fail("Parent permission not exist");
+            }
+            else
+            {
+                var model = Permission.Create(name, code, path, parentId, type.ToEnumValue<PermissionType>(), sort);
+                var entity = Db.Permissions.Add(model).Entity;
+                if (Db.SaveChanges() > 0)
+                {
+                    response.Succeed(new Id(entity.Id));
+                }
             }
 
             return Task.FromResult(response);
         }
 
-        public Task<Flag> ModifyPermission(int id, string name, string code, string path, int parentId, string type)
+        public Task<Flag> ModifyPermission(int id, string name, string code, string path, int parentId, string type, int sort)
         {
             var response = new Flag();
 
@@ -99,13 +111,17 @@ namespace LilySimple.Services.Rbac
             {
                 response.Fail("Permission not exist");
             }
-            else if (Db.Permissions.GetById(parentId) == null)
+            else if (Db.Permissions.Where(p => p.Id != id).Any(p => p.Name == name || p.Code == code))
+            {
+                response.Fail("Duplicated name or code");
+            }
+            else if (parentId > 0 && Db.Permissions.GetById(parentId) == null)
             {
                 response.Fail("Parent permission not exist");
             }
             else
             {
-                entity.Modify(name, code, path, parentId, type.ToEnumValue<PermissionType>());
+                entity.Modify(name, code, path, parentId, type.ToEnumValue<PermissionType>(), sort);
                 if (Db.SaveChanges() > 0)
                 {
                     response.Succeed();
@@ -123,6 +139,10 @@ namespace LilySimple.Services.Rbac
             if (entity == null)
             {
                 response.Fail("Permission not exist");
+            }
+            else if (Db.Permissions.Any(p => p.ParentId == id))
+            {
+                response.Fail("You need to delete the child permissions first");
             }
             else
             {
@@ -275,10 +295,9 @@ namespace LilySimple.Services.Rbac
             return Task.FromResult(result);
         }
 
-        public PermissionNodeResponse[] GetUserPermissions(int userId = 0)
+        public PermissionNodeResponse[] GetTreePermissions(int userId = 0)
         {
-
-            var permissionQuery = Db.Permissions.Where(p => true);
+            IQueryable<Permission> permissionQuery = Db.Permissions;
             if (userId > 0)
             {
                 var permissions = Db.UserRoles.Where(ur => ur.UserId == userId)

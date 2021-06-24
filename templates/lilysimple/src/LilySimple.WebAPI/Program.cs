@@ -21,16 +21,15 @@ namespace LilySimple
 
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
-            var configuration = new ConfigurationBuilder()
+            var serilogConfiguration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json")
-                .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", true)
+                .AddJsonFile("serilog.json")
                 .Build();
 
             return Host.CreateDefaultBuilder(args)
                 .UseSerilog((ctx, cfg) =>
                 {
-                    cfg.ReadFrom.Configuration(configuration, sectionName: "Serilog");
+                    cfg.ReadFrom.Configuration(serilogConfiguration, sectionName: "Serilog");
                 })
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .ConfigureWebHostDefaults(webBuilder =>

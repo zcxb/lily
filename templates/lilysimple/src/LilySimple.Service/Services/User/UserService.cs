@@ -1,10 +1,12 @@
 ﻿using LilySimple.EntityFrameworkCore;
+using LilySimple.Services.Rbac;
 using LilySimple.Shared.Enums;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using UserModel = LilySimple.Entities.User;
 
@@ -13,10 +15,13 @@ namespace LilySimple.Services.User
     public class UserService : ServiceBase
     {
         private readonly ILogger<UserService> _logger;
+        private readonly RbacService _rbacService;
 
-        public UserService(ILogger<UserService> logger)
+        public UserService(ILogger<UserService> logger,
+                           RbacService rbacService)
         {
             _logger = logger;
+            _rbacService = rbacService;
         }
 
         public void InitializeAdminUser()
@@ -26,7 +31,7 @@ namespace LilySimple.Services.User
 
             try
             {
-                if (Db.Users.Any(i => i.UserName.Equals(adminUserName)))
+                if (Db.Users.Any(u => u.UserName.Equals(adminUserName)))
                 {
                     _logger.LogInformation("admin account exists, quit init process");
                     return;
@@ -53,7 +58,7 @@ namespace LilySimple.Services.User
         {
             IList<Claim> claims = new List<Claim>();
 
-            var entity = Db.Users.Where(i => i.UserName == userName).FirstOrDefault();
+            var entity = Db.Users.Where(u => u.UserName == userName).FirstOrDefault();
             if (entity == null)
             {
                 return Task.FromResult((UserLoginStatus.AccountNotFound, claims.ToArray()));
@@ -97,9 +102,27 @@ namespace LilySimple.Services.User
             return Task.FromResult(result);
         }
 
-        //public Task<Wrapped<Object>> GetUserProfile()
-        //{
+        public Task<Wrapped<UserProfileResponse>> GetUserProfile(int userId, bool isAdmin)
+        {
+            var response = new Wrapped<UserProfileResponse>();
 
-        //}
+            var userEntity = Db.Users.GetById(userId);
+            if (userEntity == null)
+            {
+                response.Fail("User not exist");
+            }
+            else
+            {
+                var permissions = _rbacService.GetUserPermissions(isAdmin ? 0 : userId);
+
+                response.Succeed(new UserProfileResponse
+                {
+                    UserName = userEntity.UserName,
+                    Permissions = permissions
+                });
+            }
+
+            return Task.FromResult(response);
+        }
     }
 }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace LilySimple.Models.Role
 {
-    public class RoleQueryRequest
+    public class RoleQueryRequest : Pager
     {
     }
 }

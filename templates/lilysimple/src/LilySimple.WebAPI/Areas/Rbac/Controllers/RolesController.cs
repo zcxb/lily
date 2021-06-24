@@ -1,6 +1,6 @@
 ﻿using LilySimple.Authorizations;
 using LilySimple.Models.Role;
-using LilySimple.Services.Privilege;
+using LilySimple.Services.Rbac;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -8,21 +8,47 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LilySimple.Controllers
+namespace LilySimple.Areas.Rbac.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class RolesController : BizControllerBase
+    /// <summary>
+    /// 角色管理
+    /// </summary>
+    public class RolesController : RbacAreaControllerBase
     {
-        private readonly PrivilegeService _privilegeService;
+        private readonly RbacService _privilegeService;
 
-        public RolesController(PrivilegeService privilegeService)
+        public RolesController(RbacService privilegeService)
         {
             _privilegeService = privilegeService;
         }
 
         /// <summary>
-        /// 创建角色
+        /// 角色列表
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Permission("role-list")]
+        public async Task<ActionResult> GetPaginatedRoles(RoleQueryRequest request)
+        {
+            var result = await _privilegeService.GetPaginatedRoles(request.Page, request.PageSize);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// 单个角色及其权限
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id:int:min(1)}")]
+        public async Task<ActionResult> GetRoleById(int id)
+        {
+            var result = await _privilegeService.GetRolePermissionsByRoleId(id);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// 创建角色并分配权限
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -35,7 +61,7 @@ namespace LilySimple.Controllers
         }
 
         /// <summary>
-        /// 修改角色
+        /// 修改角色并分配权限
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -48,7 +74,7 @@ namespace LilySimple.Controllers
         }
 
         /// <summary>
-        /// 删除角色
+        /// 删除角色及其权限
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>

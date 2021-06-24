@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 namespace LilySimple.Controllers
 {
     [Authorize]
+    [ApiExplorerSettings(GroupName = "Basic")]
     public class BizControllerBase : ControllerBase
     {
         protected readonly IConfiguration Configuration;

@@ -1,6 +1,5 @@
 ﻿using LilySimple.Extensions;
-using LilySimple.Services;
-using LilySimple.Services.User;
+using LilySimple.Services.Rbac;
 using LilySimple.Settings;
 using LilySimple.Shared.Enums;
 using LilySimple.Models.User;
@@ -13,17 +12,20 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using LilySimple.Services;
+using LilySimple.Authorizations;
+using LilySimple.Services.User;
 
 namespace LilySimple.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : BizControllerBase
+    public class UserController : BizControllerBase
     {
         private readonly UserService _userService;
         private readonly JwtBearerSetting _jwtBearerSetting;
 
-        public UsersController(UserService userService,
+        public UserController(UserService userService,
                                IOptions<JwtBearerSetting> jwtBearerSetting)
         {
             _userService = userService;
@@ -72,6 +74,16 @@ namespace LilySimple.Controllers
             return Ok(response);
         }
 
+        /// <summary>
+        /// 获取用户详细信息
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("profile")]
+        public async Task<ActionResult> GetUserProfile()
+        {
+            var result = await _userService.GetUserProfile(User.GetUserId(), User.IsAdmin());
+            return Ok(result);
+        }
 
         /// <summary>
         /// 修改密码
@@ -81,8 +93,8 @@ namespace LilySimple.Controllers
         [HttpPost("change-password")]
         public async Task<ActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
         {
-            var response = await _userService.ChangePassword(User.GetUserId(), request.OldPassword, request.NewPassword);
-            return Ok(response);
+            var result = await _userService.ChangePassword(User.GetUserId(), request.OldPassword, request.NewPassword);
+            return Ok(result);
         }
     }
 }

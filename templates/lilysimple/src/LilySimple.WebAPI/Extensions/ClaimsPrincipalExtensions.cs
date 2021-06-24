@@ -12,7 +12,7 @@ namespace LilySimple.Extensions
     {
         public static int GetUserId(this ClaimsPrincipal user)
         {
-            var userIdOrNull = user.Claims?.FirstOrDefault(i => i.Type == ClaimTypes.NameIdentifier);
+            var userIdOrNull = user.Claims?.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
             if (int.TryParse(userIdOrNull?.Value, out int result))
             {
                 return result;
@@ -22,7 +22,7 @@ namespace LilySimple.Extensions
 
         public static string GetUserName(this ClaimsPrincipal user)
         {
-            var userName = user.Claims?.FirstOrDefault(i => i.Type == "username");
+            var userName = user.Claims?.FirstOrDefault(c => c.Type == "username");
             if (userName != null && userName.Value.IsNotNullOrWhiteSpace())
             {
                 return userName.Value;

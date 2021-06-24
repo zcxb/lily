@@ -9,5 +9,14 @@ namespace LilySimple.Entities
         public int UserId { get; set; }
 
         public int RoleId { get; set; }
+
+        public static UserRole Create(int userId, int roleId)
+        {
+            return new UserRole
+            {
+                UserId = userId,
+                RoleId = roleId,
+            };
+        }
     }
 }

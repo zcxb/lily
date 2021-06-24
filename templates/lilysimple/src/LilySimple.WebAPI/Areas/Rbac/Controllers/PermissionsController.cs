@@ -1,5 +1,5 @@
 ﻿using LilySimple.Authorizations;
-using LilySimple.Services.Privilege;
+using LilySimple.Services.Rbac;
 using LilySimple.Shared.Consts;
 using LilySimple.Models.Permission;
 using Microsoft.AspNetCore.Mvc;
@@ -8,15 +8,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LilySimple.Controllers
+namespace LilySimple.Areas.Rbac.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class PermissionsController : BizControllerBase
+    /// <summary>
+    /// 权限管理
+    /// </summary>
+    public class PermissionsController : RbacAreaControllerBase
     {
-        private readonly PrivilegeService _privilegeService;
+        private readonly RbacService _privilegeService;
 
-        public PermissionsController(PrivilegeService privilegeService)
+        public PermissionsController(RbacService privilegeService)
         {
             _privilegeService = privilegeService;
         }
@@ -37,7 +38,7 @@ namespace LilySimple.Controllers
                     var tree = await _privilegeService.GetPermissionTree();
                     return Ok(tree);
                 default:
-                    var list = await _privilegeService.GetPermissionList(
+                    var list = await _privilegeService.GetPaginatedPermissions(
                         request.Page, request.PageSize);
                     return Ok(list);
             }

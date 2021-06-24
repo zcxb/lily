@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace LilySimple.Services.Privilege
+namespace LilySimple.Services.Rbac
 {
     public class PermissionNodeResponse : TreeNode
     {

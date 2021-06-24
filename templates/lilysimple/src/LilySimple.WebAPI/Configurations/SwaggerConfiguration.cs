@@ -14,14 +14,10 @@ namespace LilySimple.Configurations
     {
         public static IServiceCollection AddCustomSwagger(this IServiceCollection services)
         {
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(options =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Title = "LilySimple",
-                    Version = "v1",
-                    Description = "LilySimple.WebAPI"
-                });
+                options.SwaggerDoc("Basic", new OpenApiInfo { Title = "基础接口" });
+                options.SwaggerDoc("Rbac", new OpenApiInfo { Title = "用户角色权限管理接口" });
                 //var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlFiles = new List<string>
                 {
@@ -30,9 +26,9 @@ namespace LilySimple.Configurations
                 foreach (var xmlFile in xmlFiles)
                 {
                     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                    c.IncludeXmlComments(xmlPath, true);
+                    options.IncludeXmlComments(xmlPath, true);
                 }
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
                     Type = SecuritySchemeType.ApiKey,
@@ -41,7 +37,7 @@ namespace LilySimple.Configurations
                     In = ParameterLocation.Header,
                     Description = "JWT Authorization header using the Bearer scheme."
                 });
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                 {
                     new OpenApiSecurityScheme
@@ -66,7 +62,8 @@ namespace LilySimple.Configurations
             app.UseSwaggerUI(c =>
             {
                 c.IndexStream = () => typeof(Startup).GetTypeInfo().Assembly.GetManifestResourceStream("LilySimple.Assets.SwaggerIndex.html");
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+                c.SwaggerEndpoint("/swagger/Basic/swagger.json", "基础接口");
+                c.SwaggerEndpoint("/swagger/Rbac/swagger.json", "用户角色权限管理接口");
             });
 
             return app;

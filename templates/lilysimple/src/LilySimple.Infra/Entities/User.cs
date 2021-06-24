@@ -10,6 +10,15 @@ namespace LilySimple.Entities
 
         public string PasswordHash { get; set; }
 
+        public static User Create(string userName, string passwordHash)
+        {
+            return new User
+            {
+                UserName = userName,
+                PasswordHash = passwordHash,
+            };
+        }
+
         public void ChangePassword(string newPasswordHash)
         {
             PasswordHash = newPasswordHash;

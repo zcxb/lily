@@ -1,5 +1,5 @@
 ﻿using LilySimple.Extensions;
-using LilySimple.Services.Privilege;
+using LilySimple.Services.Rbac;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,13 +12,13 @@ namespace LilySimple.Authorizations
     public class PermissionAuthorizationHandler : AuthorizationHandler<PermissionAuthorizationRequirement>
     {
         private readonly ILogger<PermissionAuthorizationHandler> _logger;
-        private readonly PrivilegeService _privilegeService;
+        private readonly RbacService _userService;
 
         public PermissionAuthorizationHandler(ILogger<PermissionAuthorizationHandler> logger,
-                                              PrivilegeService privilegeService)
+                                              RbacService userService)
         {
             _logger = logger;
-            _privilegeService = privilegeService;
+            _userService = userService;
         }
 
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionAuthorizationRequirement requirement)
@@ -31,7 +31,7 @@ namespace LilySimple.Authorizations
             }
 
             var userId = user.GetUserId();
-            var result = await _privilegeService.CheckPermission(userId, requirement.Name);
+            var result = await _userService.CheckUserPermission(userId, requirement.Name);
             if (result)
             {
                 context.Succeed(requirement);

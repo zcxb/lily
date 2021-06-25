@@ -24,35 +24,7 @@ namespace LilySimple.Services.User
             _rbacService = rbacService;
         }
 
-        public void InitializeAdminUser()
-        {
-            var adminUserName = Configuration["AdminInit:UserName"] ?? "admin";
-            var adminPassword = Configuration["AdminInit:Password"] ?? "123456";
-
-            try
-            {
-                if (Db.Users.Any(u => u.UserName.Equals(adminUserName)))
-                {
-                    _logger.LogInformation("admin account exists, quit init process");
-                    return;
-                }
-
-                var model = new UserModel
-                {
-                    UserName = adminUserName,
-                    PasswordHash = BCrypt.Net.BCrypt.HashPassword(adminPassword)
-                };
-                var entity = Db.Users.Add(model).Entity;
-                if (Db.SaveChanges() > 0)
-                {
-                    _logger.LogInformation("admin account has been created.");
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ex.Message);
-            }
-        }
+        
 
         public Task<(UserLoginStatus, Claim[])> ValidateLoginUser(string userName, string password)
         {

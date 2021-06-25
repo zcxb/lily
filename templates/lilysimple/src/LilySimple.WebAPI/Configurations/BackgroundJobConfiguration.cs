@@ -1,6 +1,6 @@
 ﻿using Hangfire;
 using Hangfire.MemoryStorage;
-using LilySimple.Services.User;
+using LilySimple.Services.Rbac;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -29,7 +29,7 @@ namespace LilySimple.Configurations
         public static IApplicationBuilder UseHangfireBackgroundJobs(this IApplicationBuilder app, IBackgroundJobClient backgroundJobClient)
         {
             backgroundJobClient.Enqueue(() =>
-            app.ApplicationServices.GetService<UserService>().InitializeAdminUser());
+            app.ApplicationServices.GetService<RbacService>().InitializeAdminUser());
 
             return app;
         }

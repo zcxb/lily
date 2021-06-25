@@ -13,6 +13,9 @@ namespace LilySimple.Services.Rbac
         [JsonPropertyName("name")]
         public string Name { get; set; }
 
+        [JsonPropertyName("is_reserved")]
+        public bool IsReserved { get; set; }
+
         [JsonPropertyName("permissions")]
         public int[] Permissions { get; set; }
     }

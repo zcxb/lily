@@ -19,6 +19,11 @@ namespace LilySimple.Entities
             };
         }
 
+        public void Modify()
+        {
+
+        }
+
         public void ChangePassword(string newPasswordHash)
         {
             PasswordHash = newPasswordHash;

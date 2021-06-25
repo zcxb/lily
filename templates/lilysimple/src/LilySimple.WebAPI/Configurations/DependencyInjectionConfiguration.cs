@@ -31,6 +31,15 @@ namespace LilySimple.Configurations
             builder.RegisterAssemblyTypes(assemblies.ToArray())
                 .Where(t => typeof(ServiceBase).IsAssignableFrom(t) && !t.IsAbstract)
                 .AsSelf()
+                .InstancePerLifetimeScope(); 
+        }
+    }
+
+    public class DefaultDbContextModule : AutofacModule
+    {
+        protected override void Load(ContainerBuilder builder)
+        {
+            builder.RegisterType<Contexts.DefaultDbContext>().AsSelf().PropertiesAutowired()
                 .InstancePerLifetimeScope();
         }
     }

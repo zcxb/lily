@@ -11,7 +11,7 @@ namespace LilySimple.EntityFrameworkCore
         public static TEntity GetById<TEntity>(this IQueryable<TEntity> query, int id)
             where TEntity : ModelBase
         {
-            return query.FirstOrDefault(i => id.Equals(i.Id));
+            return query.Where(i => i.Id == id).FirstOrDefault();
         }
     }
 }

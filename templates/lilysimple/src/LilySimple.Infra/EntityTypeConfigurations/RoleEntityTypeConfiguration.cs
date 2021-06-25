@@ -25,7 +25,7 @@ namespace LilySimple.EntityTypeConfigurations
             builder.Property(m => m.IsReserved)
                 .HasColumnName("is_reserved")
                 .IsRequired()
-                .HasDefaultValue(false);
+                .HasDefaultValue(0);
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace LilySimple.Services.Rbac
 {
-    public class PermissionNodeResponse : TreeNode
+    public class PermissionNodeResponse : SortableTreeNode
     {
         [JsonPropertyName("id")]
         public override int Id { get; set; }
@@ -25,5 +25,8 @@ namespace LilySimple.Services.Rbac
 
         [JsonPropertyName("type")]
         public string Type { get; set; }
+
+        [JsonPropertyName("sort")]
+        public override int Sort { get; set; }
     }
 }

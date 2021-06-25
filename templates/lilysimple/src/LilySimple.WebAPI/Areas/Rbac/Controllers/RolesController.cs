@@ -29,7 +29,7 @@ namespace LilySimple.Areas.Rbac.Controllers
         /// <returns></returns>
         [HttpGet]
         [Permission("role-list")]
-        public async Task<ActionResult> GetPaginatedRoles(RoleQueryRequest request)
+        public async Task<ActionResult> GetPaginatedRoles([FromQuery] RoleQueryRequest request)
         {
             var result = await _privilegeService.GetPaginatedRoles(request.Page, request.PageSize);
             return Ok(result);

@@ -16,10 +16,10 @@ namespace LilySimple.Services.Rbac
     public partial class RbacService : ServiceBase
     {
         private readonly ILogger<RbacService> _logger;
-
-        public RbacService(Contexts.DefaultDbContext db,
+        public Contexts.DefaultDbContext Db { get; set; }
+        public RbacService(//Contexts.DefaultDbContext db,
                            ILogger<RbacService> logger)
-            : base(db)
+           // : base(db)
         {
             _logger = logger;
         }

@@ -1,4 +1,6 @@
-﻿using LilySimple.Contexts;
+﻿using Autofac;
+using LilySimple.Contexts;
+using LilySimple.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -7,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutofacModule = Autofac.Module;
 
 namespace LilySimple.Configurations
 {
@@ -36,6 +39,15 @@ namespace LilySimple.Configurations
             dbContext.Database.EnsureCreated();
 
             return app;
+        }
+    }
+
+    public class DbContextModule : AutofacModule
+    {
+        protected override void Load(global::Autofac.ContainerBuilder builder)
+        {
+            builder.RegisterType<DefaultDbContext>().AsSelf().PropertiesAutowired()
+                .InstancePerLifetimeScope();
         }
     }
 }

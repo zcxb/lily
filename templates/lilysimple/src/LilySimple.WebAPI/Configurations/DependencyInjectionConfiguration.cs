@@ -22,12 +22,17 @@ namespace LilySimple.Configurations
     {
         protected override void Load(ContainerBuilder builder)
         {
-            var assemblies = ReflectionHelper.GetAllAssemblies();
+            //var assemblies = ReflectionHelper.GetAllAssemblies();
 
-            builder.RegisterAssemblyTypes(assemblies.ToArray())
-                .Where(t => typeof(ServiceBase).IsAssignableFrom(t) && !t.IsAbstract)
-                .AsSelf()
-                .InstancePerLifetimeScope(); 
+            //builder.RegisterAssemblyTypes(assemblies.ToArray())
+            //    .Where(t => typeof(ServiceBase).IsAssignableFrom(t) && !t.IsAbstract)
+            //    .AsSelf()
+            //    .InstancePerLifetimeScope(); 
+
+            var servicesTypesInAssembly = typeof(ServiceBase).Assembly.GetExportedTypes()
+                .Where(type => typeof(ServiceBase).IsAssignableFrom(type)).ToArray();
+
+            builder.RegisterTypes(servicesTypesInAssembly).PropertiesAutowired();
         }
     }
 }

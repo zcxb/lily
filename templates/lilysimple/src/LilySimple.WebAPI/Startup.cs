@@ -68,6 +68,7 @@ namespace LilySimple
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
+            builder.RegisterModule(new DbContextModule());
             builder.RegisterModule(new ApplicationModule());
         }
     }

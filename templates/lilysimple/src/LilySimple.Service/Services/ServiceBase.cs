@@ -10,12 +10,13 @@ namespace LilySimple.Services
 {
     public class ServiceBase
     {
-        protected readonly DefaultDbContext Db;
+        //protected readonly DefaultDbContext Db;
         protected readonly IConfiguration Configuration;
 
-        public ServiceBase(DefaultDbContext db)
+        //public ServiceBase(DefaultDbContext db)
+        public ServiceBase()
         {
-            Db = db;
+            //Db = db;
             Configuration = IocManager.Instance.GetService<IConfiguration>();
         }
     }

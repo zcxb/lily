@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using LilySimple.Autofac;
 using LilySimple.Services;
 using Microsoft.AspNetCore.Builder;
 using System.Linq;

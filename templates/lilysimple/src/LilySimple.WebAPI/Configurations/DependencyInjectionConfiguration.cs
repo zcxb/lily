@@ -3,11 +3,7 @@ using Autofac.Extensions.DependencyInjection;
 using LilySimple.Autofac;
 using LilySimple.Services;
 using Microsoft.AspNetCore.Builder;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 using AutofacModule = Autofac.Module;
 
 namespace LilySimple.Configurations
@@ -32,15 +28,6 @@ namespace LilySimple.Configurations
                 .Where(t => typeof(ServiceBase).IsAssignableFrom(t) && !t.IsAbstract)
                 .AsSelf()
                 .InstancePerLifetimeScope(); 
-        }
-    }
-
-    public class DefaultDbContextModule : AutofacModule
-    {
-        protected override void Load(ContainerBuilder builder)
-        {
-            builder.RegisterType<Contexts.DefaultDbContext>().AsSelf().PropertiesAutowired()
-                .InstancePerLifetimeScope();
         }
     }
 }

@@ -17,14 +17,16 @@ namespace LilySimple.Services.User
         private readonly ILogger<UserService> _logger;
         private readonly RbacService _rbacService;
 
-        public UserService(ILogger<UserService> logger,
-                           RbacService rbacService)
+        public UserService(Contexts.DefaultDbContext db,
+                           ILogger<UserService> logger,
+                           RbacService rbacService) 
+            : base(db)
         {
             _logger = logger;
             _rbacService = rbacService;
         }
 
-        
+
 
         public Task<(UserLoginStatus, Claim[])> ValidateLoginUser(string userName, string password)
         {

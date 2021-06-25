@@ -7,7 +7,7 @@ using System.Text;
 
 namespace LilySimple.Contexts
 {
-    public sealed class DefaultDbContext : DbContext
+    public  class DefaultDbContext : DbContext
     {
         public DefaultDbContext(DbContextOptions<DefaultDbContext> options) : base(options) { }
 

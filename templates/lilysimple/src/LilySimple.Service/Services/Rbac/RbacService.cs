@@ -17,7 +17,9 @@ namespace LilySimple.Services.Rbac
     {
         private readonly ILogger<RbacService> _logger;
 
-        public RbacService(ILogger<RbacService> logger)
+        public RbacService(Contexts.DefaultDbContext db,
+                           ILogger<RbacService> logger)
+            : base(db)
         {
             _logger = logger;
         }
@@ -212,7 +214,7 @@ namespace LilySimple.Services.Rbac
         {
             var response = new Wrapped<RolePermissionsRespose>();
 
-            var roleEntity = Db.Roles.Find(roleId);
+            var roleEntity = Db.Roles.GetById(roleId);
             if (roleEntity == null)
             {
                 response.Fail("Role not exist");

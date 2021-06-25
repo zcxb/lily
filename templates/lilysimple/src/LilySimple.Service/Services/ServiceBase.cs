@@ -1,6 +1,7 @@
 ﻿using LilySimple.Autofac;
 using LilySimple.Contexts;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,9 +13,9 @@ namespace LilySimple.Services
         protected readonly DefaultDbContext Db;
         protected readonly IConfiguration Configuration;
 
-        public ServiceBase()
+        public ServiceBase(DefaultDbContext db)
         {
-            Db = IocManager.Instance.GetService<DefaultDbContext>();
+            Db = db;
             Configuration = IocManager.Instance.GetService<IConfiguration>();
         }
     }

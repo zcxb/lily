@@ -16,12 +16,9 @@ namespace LilySimple.Services.User
     {
         private readonly ILogger<UserService> _logger;
         private readonly RbacService _rbacService;
-        public Contexts.DefaultDbContext Db { get; set; }
 
-        public UserService(//Contexts.DefaultDbContext db,
-                           ILogger<UserService> logger,
+        public UserService(ILogger<UserService> logger,
                            RbacService rbacService) 
-            //: base(db)
         {
             _logger = logger;
             _rbacService = rbacService;

@@ -1,10 +1,12 @@
 ﻿using Autofac;
+using LilySimple.Autofac;
 using LilySimple.Contexts;
 using LilySimple.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,8 +38,15 @@ namespace LilySimple.Configurations
             var optionBuilder = new DbContextOptionsBuilder<DefaultDbContext>();
             optionBuilder.UseMySql(configuration.GetConnectionString("Default"));
             using var dbContext = new DefaultDbContext(optionBuilder.Options);
-            dbContext.Database.EnsureCreated();
-
+            try
+            {
+                dbContext.Database.EnsureCreated();
+            }
+            catch (Exception)
+            {
+                var logger = IocManager.Instance.GetService<ILoggerFactory>().CreateLogger("Startup");
+                logger.LogError("Database ensure created failed");
+            }
             return app;
         }
     }

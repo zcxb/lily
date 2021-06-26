@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31410.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A73FA5E6-C320-40FB-A1C9-ACE440AEA246}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LilyGrpc.Host", "src\LilyGrpc.Host\LilyGrpc.Host.csproj", "{D362DBED-526D-4890-B153-292BFD703ECF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D1B1400B-CF72-419B-A33A-78A89E951229}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		Directory.Build.props = Directory.Build.props
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D362DBED-526D-4890-B153-292BFD703ECF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D362DBED-526D-4890-B153-292BFD703ECF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D362DBED-526D-4890-B153-292BFD703ECF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D362DBED-526D-4890-B153-292BFD703ECF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D362DBED-526D-4890-B153-292BFD703ECF} = {A73FA5E6-C320-40FB-A1C9-ACE440AEA246}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {37A07BD2-E591-4855-8EDE-26C7E97AE117}
+	EndGlobalSection
+EndGlobal

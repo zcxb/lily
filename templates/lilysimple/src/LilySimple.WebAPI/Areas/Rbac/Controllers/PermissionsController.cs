@@ -1,11 +1,8 @@
 ﻿using LilySimple.Authorizations;
+using LilySimple.QueryModels.Rbac;
 using LilySimple.Services.Rbac;
 using LilySimple.Shared.Consts;
-using LilySimple.Models.Permission;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace LilySimple.Areas.Rbac.Controllers

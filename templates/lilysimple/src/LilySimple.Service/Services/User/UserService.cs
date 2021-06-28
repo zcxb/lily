@@ -45,6 +45,7 @@ namespace LilySimple.Services.User
             }
             else
             {
+                _logger.LogDebug("user {UserName}[{UserId}] login failed", userName, entity.Id);
                 return Task.FromResult((UserLoginStatus.WrongPassword, claims.ToArray()));
             }
         }

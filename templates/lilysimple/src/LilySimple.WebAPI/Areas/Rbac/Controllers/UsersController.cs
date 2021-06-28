@@ -1,6 +1,6 @@
 ﻿using LilySimple.Authorizations;
 using LilySimple.Controllers;
-using LilySimple.Models.User;
+using LilySimple.QueryModels.Rbac;
 using LilySimple.Services.Rbac;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

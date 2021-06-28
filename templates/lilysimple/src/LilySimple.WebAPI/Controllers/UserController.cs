@@ -2,7 +2,6 @@
 using LilySimple.Services.Rbac;
 using LilySimple.Settings;
 using LilySimple.Shared.Enums;
-using LilySimple.Models.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;

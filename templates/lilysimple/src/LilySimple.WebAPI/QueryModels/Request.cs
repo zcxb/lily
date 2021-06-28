@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LilySimple.Models
+namespace LilySimple.QueryModels.Rbac
 {
     public class Pager
     {

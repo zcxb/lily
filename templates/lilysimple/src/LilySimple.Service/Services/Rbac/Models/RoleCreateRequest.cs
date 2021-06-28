@@ -4,13 +4,10 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace LilySimple.Models.Role
+namespace LilySimple.Services.Rbac
 {
-    public class RoleModifyRequest
+    public class RoleCreateRequest
     {
-        [JsonPropertyName("id")]
-        public int Id { get; set; }
-
         [JsonPropertyName("name")]
         public string Name { get; set; }
 

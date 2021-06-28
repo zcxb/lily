@@ -22,6 +22,7 @@ namespace LilySimple.Configurations
                 var xmlFiles = new List<string>
                 {
                     "LilySimple.WebAPI.xml",
+                    "LilySimple.Service.xml",
                 };
                 foreach (var xmlFile in xmlFiles)
                 {

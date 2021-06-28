@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace LilySimple.Models.User
+namespace LilySimple.Services.User
 {
     public class ChangePasswordRequest
     {

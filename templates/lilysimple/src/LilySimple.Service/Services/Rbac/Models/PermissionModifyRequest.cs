@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace LilySimple.Models.Permission
+namespace LilySimple.Services.Rbac
 {
     public class PermissionModifyRequest
     {

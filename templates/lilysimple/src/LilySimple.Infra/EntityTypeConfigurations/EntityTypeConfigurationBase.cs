@@ -15,6 +15,9 @@ namespace LilySimple.EntityTypeConfigurations
         {
             builder.HasKey(m => m.Id);
 
+            builder.Property(m => m.Id)
+                .HasColumnName("id");
+
             builder.Property(m => m.IsDeleted)
                 .HasColumnName("is_deleted")
                 .HasDefaultValue(false);

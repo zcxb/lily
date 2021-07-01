@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Autofac;
 using Hangfire;
 using LilySimple.Configurations;
+using LilySimple.Services;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -30,6 +32,7 @@ namespace LilySimple
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMediatR(typeof(ServiceBase).Assembly);
             services.AddCustomPermission();
             services.AddMiniProfiler().AddEntityFramework();
             services.AddDefaultDbContext(Configuration);

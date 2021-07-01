@@ -17,4 +17,8 @@
     <ProjectReference Include="..\LilySimple.Infra\LilySimple.Infra.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="EventBus\" />
+  </ItemGroup>
+
 </Project>

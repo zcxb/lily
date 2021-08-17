@@ -14,13 +14,10 @@ namespace LilySimple.Services.User
 {
     public class UserService : ServiceBase
     {
-        private readonly ILogger<UserService> _logger;
         private readonly RbacService _rbacService;
 
-        public UserService(ILogger<UserService> logger,
-                           RbacService rbacService) 
+        public UserService(RbacService rbacService) 
         {
-            _logger = logger;
             _rbacService = rbacService;
         }
 
@@ -28,6 +25,7 @@ namespace LilySimple.Services.User
 
         public Task<(UserLoginStatus, Claim[])> ValidateLoginUser(string userName, string password)
         {
+            Logger.LogInformation("hello");
             IList<Claim> claims = new List<Claim>();
 
             var entity = Db.Users.Where(u => u.UserName == userName).FirstOrDefault();
@@ -45,7 +43,7 @@ namespace LilySimple.Services.User
             }
             else
             {
-                _logger.LogDebug("user {UserName}[{UserId}] login failed", userName, entity.Id);
+                Logger.LogDebug("user {UserName}[{UserId}] login failed", userName, entity.Id);
                 return Task.FromResult((UserLoginStatus.WrongPassword, claims.ToArray()));
             }
         }

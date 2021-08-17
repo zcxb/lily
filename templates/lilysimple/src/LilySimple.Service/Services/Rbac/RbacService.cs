@@ -15,10 +15,8 @@ namespace LilySimple.Services.Rbac
 {
     public partial class RbacService : ServiceBase
     {
-        private readonly ILogger<RbacService> _logger;
-        public RbacService(ILogger<RbacService> logger)
+        public RbacService()
         {
-            _logger = logger;
         }
 
         public Task<Listed<PermissionNodeResponse>> GetFullTreePermissions()
@@ -36,7 +34,7 @@ namespace LilySimple.Services.Rbac
             {
                 if (Db.Users.Any(u => u.UserName.Equals(adminUserName)))
                 {
-                    _logger.LogInformation("admin account exists, quit init process");
+                    Logger.LogInformation("admin account exists, quit init process");
                     return;
                 }
 
@@ -48,12 +46,12 @@ namespace LilySimple.Services.Rbac
                 var entity = Db.Users.Add(model).Entity;
                 if (Db.SaveChanges() > 0)
                 {
-                    _logger.LogInformation("admin account has been created.");
+                    Logger.LogInformation("admin account has been created.");
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, ex.Message);
+                Logger.LogError(ex, ex.Message);
             }
         }
 
@@ -261,7 +259,7 @@ namespace LilySimple.Services.Rbac
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, ex.Message);
+                    Logger.LogError(ex, ex.Message);
                     trans.Rollback();
                     response.Fail("Failed to create new role and permissions");
                 }
@@ -311,7 +309,7 @@ namespace LilySimple.Services.Rbac
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, ex.Message);
+                    Logger.LogError(ex, ex.Message);
                     trans.Rollback();
                     response.Fail("Failed to modify role and permissions");
                 }
@@ -352,7 +350,7 @@ namespace LilySimple.Services.Rbac
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, ex.Message);
+                    Logger.LogError(ex, ex.Message);
                     trans.Rollback();
                     response.Fail("Failed to delete role");
                 }
@@ -474,7 +472,7 @@ namespace LilySimple.Services.Rbac
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, ex.Message);
+                    Logger.LogError(ex, ex.Message);
                     trans.Rollback();
                     response.Fail("Failed to create user");
                 }
@@ -511,7 +509,7 @@ namespace LilySimple.Services.Rbac
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, ex.Message);
+                    Logger.LogError(ex, ex.Message);
                     trans.Rollback();
                     response.Fail("Failed to modify user and roles");
                 }

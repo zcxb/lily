@@ -28,18 +28,11 @@ namespace LilySimple.Areas.Rbac.Controllers
         [HttpGet]
         [Permission("permission-list")]
         public async Task<ActionResult> GetPermissions([FromQuery] PermissionQueryRequest request, string format)
+            => format switch
         {
-            switch (format)
-            {
-                case ApiResponseFormat.Tree:
-                    var tree = await _privilegeService.GetFullTreePermissions();
-                    return Ok(tree);
-                default:
-                    var list = await _privilegeService.GetPaginatedPermissions(
-                        request.Page, request.PageSize);
-                    return Ok(list);
-            }
-        }
+            ApiResponseFormat.Tree => Ok(await _privilegeService.GetFullTreePermissions()),
+            _ => Ok(await _privilegeService.GetPaginatedPermissions(request.Page, request.PageSize)),
+        };
 
         [HttpGet("{id:int:min(1)}")]
         public async Task<ActionResult> GetPermissionById([FromRoute] int id)

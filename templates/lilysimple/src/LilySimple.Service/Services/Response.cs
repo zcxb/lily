@@ -21,26 +21,22 @@ namespace LilySimple.Services
     public class Flag
     {
         [JsonPropertyName("success")]
-        public bool Success => _success;
-
-        protected bool _success = false;
+        public bool Success { get; set; }
 
         [JsonPropertyName("msg")]
-        public string Msg => _msg;
-
-        protected string _msg;
+        public string Msg { get; set; }
 
         public Flag Succeed(string msg = "ok")
         {
-            _success = true;
-            _msg = msg;
+            Success = true;
+            Msg = msg;
             return this;
         }
 
         public Flag Fail(string msg)
         {
-            _success = false;
-            _msg = msg;
+            Success = false;
+            Msg = msg;
             return this;
         }
     }
@@ -48,14 +44,12 @@ namespace LilySimple.Services
     public class Wrapped<T> : Flag
     {
         [JsonPropertyName("data")]
-        public T Data => _data;
-
-        protected T _data;
+        public T Data { get; set; }
 
         public Wrapped<T> Succeed(T data, string msg = "ok")
         {
             base.Succeed(msg);
-            _data = data;
+            Data = data;
             return this;
         }
     }
@@ -63,14 +57,12 @@ namespace LilySimple.Services
     public class Listed<T> : Flag
     {
         [JsonPropertyName("items")]
-        public IEnumerable<T> Items => _items;
-
-        protected IEnumerable<T> _items;
+        public IEnumerable<T> Items { get; set; }
 
         public Listed<T> Succeed(IEnumerable<T> items, string msg = "ok")
         {
             base.Succeed(msg);
-            _items = items;
+            Items = items;
             return this;
         }
     }
@@ -78,15 +70,13 @@ namespace LilySimple.Services
     public class Paginated<T> : Listed<T>
     {
         [JsonPropertyName("count")]
-        public long Count => _count;
-
-        protected long _count;
+        public long Count { get; set; }
 
         public Paginated<T> Succeed(IEnumerable<T> items, long count, string msg = "ok")
         {
             base.Succeed(msg);
-            _items = items;
-            _count = count;
+            Items = items;
+            Count = count;
             return this;
         }
     }

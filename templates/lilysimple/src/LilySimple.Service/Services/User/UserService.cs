@@ -1,5 +1,5 @@
 ﻿using LilySimple.EntityFrameworkCore;
-using LilySimple.Services.Rbac;
+using LilySimple.Services;
 using LilySimple.Shared.Enums;
 using Microsoft.Extensions.Logging;
 using System;
@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UserModel = LilySimple.Entities.User;
 
-namespace LilySimple.Services.User
+namespace LilySimple.Services
 {
     public class UserService : ServiceBase
     {
@@ -21,11 +21,8 @@ namespace LilySimple.Services.User
             _rbacService = rbacService;
         }
 
-
-
         public Task<(UserLoginStatus, Claim[])> ValidateLoginUser(string userName, string password)
         {
-            Logger.LogInformation("hello");
             IList<Claim> claims = new List<Claim>();
 
             var entity = Db.Users.Where(u => u.UserName == userName).FirstOrDefault();
@@ -48,11 +45,9 @@ namespace LilySimple.Services.User
             }
         }
 
-        public Task<Flag> ChangePassword(int userId, string oldPassword, string newPassword)
+        public Task<R> ChangePassword(int userId, string oldPassword, string newPassword)
         {
-            var result = new Flag();
-
-            var entity = Db.Users.GetById(userId);
+            var entity = Db.Users.GetById(userId).FirstOrDefault();
             if (entity == null)
             {
                 result.Fail("用户不存在");
@@ -73,27 +68,25 @@ namespace LilySimple.Services.User
             return Task.FromResult(result);
         }
 
-        public Task<Wrapped<UserProfileResponse>> GetUserProfile(int userId, bool isAdmin)
+        public Task<R> GetUserProfile(int userId, bool isAdmin)
         {
-            var response = new Wrapped<UserProfileResponse>();
-
             var userEntity = Db.Users.GetById(userId);
             if (userEntity == null)
             {
-                response.Fail("User not exist");
+                result.Fail("User not exist");
             }
             else
             {
                 var permissions = _rbacService.GetTreePermissions(isAdmin ? 0 : userId);
 
-                response.Succeed(new UserProfileResponse
+                result.Succeed(new UserProfileResponse
                 {
                     UserName = userEntity.UserName,
                     Permissions = permissions
                 });
             }
 
-            return Task.FromResult(response);
+            return Task.FromResult(result);
         }
     }
 }

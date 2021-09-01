@@ -8,10 +8,10 @@ namespace LilySimple.EntityFrameworkCore
 {
     public static class EntityExtensions
     {
-        public static TEntity GetById<TEntity>(this IQueryable<TEntity> query, int id)
+        public static IQueryable<TEntity> GetById<TEntity>(this IQueryable<TEntity> query, int id)
             where TEntity : ModelBase
         {
-            return query.Where(i => i.Id == id).FirstOrDefault();
+            return query.Where(i => i.Id == id);
         }
     }
 }

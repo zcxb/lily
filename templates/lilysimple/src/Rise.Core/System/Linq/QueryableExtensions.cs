@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -22,6 +22,12 @@ namespace System.Linq
         {
             var (skipCount, maxResultCount) = ((pageNumber - 1) * pageSize, pageSize);
             return query.PageByOffset(skipCount, maxResultCount);
+        }
+
+        public static IQueryable<T> Count<T>(this IQueryable<T> query, out long count)
+        {
+            count = query.Count();
+            return query;
         }
     }
 }

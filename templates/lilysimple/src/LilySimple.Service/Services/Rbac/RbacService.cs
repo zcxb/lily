@@ -11,20 +11,26 @@ using System.Text;
 using System.Threading.Tasks;
 using UserModel = LilySimple.Entities.User;
 
-namespace LilySimple.Services.Rbac
+namespace LilySimple.Services
 {
-    public partial class RbacService : ServiceBase
+    public partial class ErrorCode
+    {
+        public const int PermissionNotFound = 4000;
+        public const int PermissionCodeOrNameDuplicated = 4001;
+        public const int ParentPermissionNotFound = 4002;
+    }
+
+    public class RbacService : ServiceBase
     {
         public RbacService()
         {
         }
 
-        public Task<Listed<PermissionNodeResponse>> GetFullTreePermissions()
+        public Task<R> GetFullTreePermissions()
         {
-            var response = new Listed<PermissionNodeResponse>();
-            response.Succeed(GetTreePermissions());
-            return Task.FromResult(response);
+            return Task.FromResult(R.List(GetTreePermissions()));
         }
+
         public void InitializeAdminUser()
         {
             var adminUserName = Configuration["AdminInit:UserName"] ?? "admin";
@@ -55,12 +61,12 @@ namespace LilySimple.Services.Rbac
             }
         }
 
-        public Task<Paginated<PermissionEntityResponse>> GetPaginatedPermissions(int page, int pageSize)
+        public Task<R> GetPaginatedPermissions(int page, int pageSize)
         {
-            var response = new Paginated<PermissionEntityResponse>();
 
             var query = Db.Permissions;
-            var entities = query.PageByNumber(page, pageSize)
+            var entities = query
+                .PageByNumber(page, pageSize)
                 .Select(i => new PermissionEntityResponse
                 {
                     Id = i.Id,
@@ -73,65 +79,56 @@ namespace LilySimple.Services.Rbac
                 }).ToList();
             var count = query.Count();
 
-            response.Succeed(entities, count);
-
-            return Task.FromResult(response);
+            return Task.FromResult(R.Page(entities, count));
         }
 
-        public Task<Wrapped<PermissionEntityResponse>> GetPermissionById(int id)
+        public Task<R> GetPermissionById(int id)
         {
-            var response = new Wrapped<PermissionEntityResponse>();
 
-            var permissionEntity = Db.Permissions.GetById(id);
+            var permissionEntity = Db.Permissions.GetById(id).FirstOrDefault();
             if (permissionEntity == null)
             {
-                response.Fail("Permission not exist");
-            }
-            else
-            {
-                response.Succeed(new PermissionEntityResponse
-                {
-                    Id = permissionEntity.Id,
-                    Name = permissionEntity.Name,
-                    Code = permissionEntity.Code,
-                    Path = permissionEntity.Path,
-                    ParentId = permissionEntity.ParentId,
-                    Type = ((PermissionType)permissionEntity.Type).GetDescription(),
-                    Sort = permissionEntity.Sort,
-                });
+                return Task.FromResult(R.Error(ErrorCode.PermissionNotFound, nameof(ErrorCode.PermissionNotFound)));
             }
 
-            return Task.FromResult(response);
+            return Task.FromResult(R.Data(new PermissionEntityResponse
+            {
+                Id = permissionEntity.Id,
+                Name = permissionEntity.Name,
+                Code = permissionEntity.Code,
+                Path = permissionEntity.Path,
+                ParentId = permissionEntity.ParentId,
+                Type = ((PermissionType)permissionEntity.Type).GetDescription(),
+                Sort = permissionEntity.Sort,
+            }));
         }
 
-        public Task<Wrapped<Id>> CreatePermission(string name, string code, string path, int parentId, string type, int sort)
+        public Task<R> CreatePermission(string name, string code, string path, int parentId, string type, int sort)
         {
-            var response = new Wrapped<Id>();
             if (Db.Permissions.Any(p => p.Name == name || p.Code == code))
             {
-                response.Fail("Duplicated name or code");
+                return Task.FromResult(R.Error(ErrorCode.PermissionCodeOrNameDuplicated, nameof(ErrorCode.PermissionCodeOrNameDuplicated)));
             }
-            else if (parentId > 0 && Db.Permissions.GetById(parentId) == null)
+            if (parentId > 0 && Db.Permissions.GetById(parentId) == null)
             {
-                response.Fail("Parent permission not exist");
-            }
-            else
-            {
-                var model = Permission.Create(name, code, path, parentId, type.ToEnumValue<PermissionType>(), sort);
-                var entity = Db.Permissions.Add(model).Entity;
-                if (Db.SaveChanges() > 0)
-                {
-                    response.Succeed(new Id(entity.Id));
-                }
+                return Task.FromResult(R.Error(ErrorCode.ParentPermissionNotFound, nameof(ErrorCode.ParentPermissionNotFound)));
             }
 
-            return Task.FromResult(response);
+            var model = Permission.Create(name, code, path, parentId, type.ToEnumValue<PermissionType>(), sort);
+            var entity = Db.Permissions.Add(model).Entity;
+            if (Db.SaveChanges() > 0)
+            {
+                return Task.FromResult(R.Data(new PermissionEntityResponse
+                {
+                    Id = entity.Id,
+                    Code = code,
+                    Name = name,
+                }));
+            }
         }
 
-        public Task<Flag> ModifyPermission(int id, string name, string code, string path, int parentId, string type, int sort)
+        public Task<R> ModifyPermission(int id, string name, string code, string path, int parentId, string type, int sort)
         {
-            var response = new Flag();
-
             var permissionEntity = Db.Permissions.GetById(id);
             if (permissionEntity == null)
             {
@@ -157,10 +154,8 @@ namespace LilySimple.Services.Rbac
             return Task.FromResult(response);
         }
 
-        public Task<Flag> DeletePermission(int id)
+        public Task<R> DeletePermission(int id)
         {
-            var response = new Flag();
-
             var permissionEntity = Db.Permissions.GetById(id);
             if (permissionEntity == null)
             {
@@ -186,10 +181,8 @@ namespace LilySimple.Services.Rbac
             return Task.FromResult(response);
         }
 
-        public Task<Paginated<RoleEntityResponse>> GetPaginatedRoles(int page, int pageSize)
+        public Task<R> GetPaginatedRoles(int page, int pageSize)
         {
-            var response = new Paginated<RoleEntityResponse>();
-
             var query = Db.Roles;
             var entities = query.PageByNumber(page, pageSize)
                 .Select(i => new RoleEntityResponse
@@ -205,7 +198,7 @@ namespace LilySimple.Services.Rbac
             return Task.FromResult(response);
         }
 
-        public Task<Wrapped<RolePermissionsRespose>> GetRolePermissionsByRoleId(int roleId)
+        public Task<R> GetRolePermissionsByRoleId(int roleId)
         {
             var response = new Wrapped<RolePermissionsRespose>();
 

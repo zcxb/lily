@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LilySimple.Core\LilySimple.Core.csproj" />
+    <ProjectReference Include="..\Rise.EfCore\Rise.EfCore.csproj" />
   </ItemGroup>
 
   <ItemGroup>

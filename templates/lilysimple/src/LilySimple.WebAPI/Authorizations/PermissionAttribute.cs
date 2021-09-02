@@ -12,6 +12,11 @@ using System.Threading.Tasks;
 
 namespace LilySimple.Authorizations
 {
+    public partial class ErrorCode
+    {
+        public const int PermissionDenied = 5000;
+    }
+
     [AttributeUsage(AttributeTargets.Method)]
     public class PermissionAttribute : Attribute, IAsyncAuthorizationFilter
     {
@@ -29,7 +34,7 @@ namespace LilySimple.Authorizations
             if (!result.Succeeded)
             {
                 context.HttpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
-                context.Result = new JsonResult(new Flag().Fail("Permission denied!"));
+                context.Result = new JsonResult(R.Error(ErrorCode.PermissionDenied, nameof(ErrorCode.PermissionDenied)));
             }
         }
     }

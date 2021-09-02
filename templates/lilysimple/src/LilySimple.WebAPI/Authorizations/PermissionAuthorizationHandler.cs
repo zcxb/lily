@@ -1,5 +1,5 @@
 ﻿using LilySimple.Extensions;
-using LilySimple.Services.Rbac;
+using LilySimple.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using System;

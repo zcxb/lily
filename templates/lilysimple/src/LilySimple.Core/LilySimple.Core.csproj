@@ -9,12 +9,10 @@
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="$(MicrosoftPackageVersion)" />
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="$(MicrosoftPackageVersion)" />
     <PackageReference Include="RestSharp" Version="106.11.7" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Rise.Core\Rise.Core.csproj" />
+    <PackageReference Include="Rise.Core" Version="0.0.1" />
   </ItemGroup>
 
 </Project>

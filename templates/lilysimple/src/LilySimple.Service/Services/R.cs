@@ -16,44 +16,44 @@ namespace LilySimple.Services
     public class R
     {
         [JsonPropertyName("success")]
-        public bool success { get; set; }
+        public bool Success { get; set; }
 
         [JsonPropertyName("code")]
-        public int code { get; set; }
+        public int Code { get; set; }
 
         [JsonPropertyName("msg")]
-        public string message { get; set; }
+        public string Message { get; set; }
 
         [JsonPropertyName("data")]
-        public object data { get; set; }
+        public object Data { get; set; }
 
         [JsonPropertyName("count")]
-        public long? count { get; set; }
+        public long? Count { get; set; }
 
         public static R Error(int code, string message)
         {
             return new R
             {
-                code = code,
-                message = message,
+                Code = code,
+                Message = message,
             };
-        }
+        } 
 
         private static R Ok(object data = null, long? count = null, string message = "Ok")
         {
             return new R
             {
-                success = true,
-                code = ErrorCode.Ok,
-                message = message,
-                data = data,
-                count = count,
+                Success = true,
+                Code = ErrorCode.Ok,
+                Message = message,
+                Data = data,
+                Count = count,
             };
         }
 
         public static R Ok() => Ok();
 
-        public static R Data<T>(T data) => Ok(data: data);
+        public static R Object<T>(T data) => Ok(data: data);
 
         public static R List<T>(IEnumerable<T> items) => Ok(data: items);
 

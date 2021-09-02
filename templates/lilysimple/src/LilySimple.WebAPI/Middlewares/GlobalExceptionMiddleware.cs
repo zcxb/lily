@@ -35,12 +35,12 @@ namespace LilySimple.Middlewares
                     context.TraceIdentifier,
                     context.Request.Method,
                     context.Request.Path);
-                var response = new Flag().Fail("An unknown error occurred.");
+                var response = R.Error(ErrorCode.Error, "服务器繁忙或发生未知错误");
 
-                if (ex is BizException bex)
-                {
-                    response.Fail(bex.Message);
-                }
+                //if (ex is BizException bex)
+                //{
+                //    response.Fail(bex.Message);
+                //}
 
                 context.Response.StatusCode = StatusCodes.Status200OK;
                 context.Response.ContentType = "application/json;charset=utf-8";

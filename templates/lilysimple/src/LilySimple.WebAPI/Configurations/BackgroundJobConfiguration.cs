@@ -1,6 +1,6 @@
 ﻿using Hangfire;
 using Hangfire.MemoryStorage;
-using LilySimple.Services.Rbac;
+using LilySimple.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System;

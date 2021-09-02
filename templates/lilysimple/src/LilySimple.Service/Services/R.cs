@@ -37,9 +37,9 @@ namespace LilySimple.Services
                 Code = code,
                 Message = message,
             };
-        } 
+        }
 
-        private static R Ok(object data = null, long? count = null, string message = "Ok")
+        public static R Ok(object data = null, long? count = null, string message = "Ok")
         {
             return new R
             {
@@ -50,8 +50,6 @@ namespace LilySimple.Services
                 Count = count,
             };
         }
-
-        public static R Ok() => Ok();
 
         public static R Object<T>(T data) => Ok(data: data);
 

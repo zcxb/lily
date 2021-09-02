@@ -1,15 +1,12 @@
 ﻿using LilySimple.DataStructure.Tree;
 using LilySimple.Entities;
-using LilySimple.EntityFrameworkCore;
 using LilySimple.Shared.Enums;
 using Microsoft.Extensions.Logging;
+using Rise.EfCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
-using UserModel = LilySimple.Entities.User;
 
 namespace LilySimple.Services
 {
@@ -53,7 +50,7 @@ namespace LilySimple.Services
                     return;
                 }
 
-                var model = new UserModel
+                var model = new User
                 {
                     UserName = adminUserName,
                     PasswordHash = BCrypt.Net.BCrypt.HashPassword(adminPassword)
@@ -421,7 +418,7 @@ namespace LilySimple.Services
                 return Task.FromResult(R.Error(ErrorCode.UserNameDuplicated, nameof(ErrorCode.UserNameDuplicated)));
             }
 
-            var model = UserModel.Create(userName, BCrypt.Net.BCrypt.HashPassword(password));
+            var model = User.Create(userName, BCrypt.Net.BCrypt.HashPassword(password));
             roles = Db.Roles.Where(r => roles.Contains(r.Id))
                 .Select(r => r.Id).ToArray();
             using var trans = Db.Database.BeginTransaction();

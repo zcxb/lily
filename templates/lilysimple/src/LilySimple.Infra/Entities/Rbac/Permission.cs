@@ -1,11 +1,12 @@
 ﻿using LilySimple.Shared.Enums;
+using Rise.Auditing;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace LilySimple.Entities
 {
-    public class Permission : ModelBase
+    public class Permission : AuditedModelBase
     {
         public string Name { get; set; }
 

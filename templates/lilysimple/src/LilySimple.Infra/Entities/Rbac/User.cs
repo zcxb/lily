@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Rise.Auditing;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace LilySimple.Entities
 {
-    public class User : ModelBase
+    public class User : AuditedModelBase
     {
         public string UserName { get; set; }
 

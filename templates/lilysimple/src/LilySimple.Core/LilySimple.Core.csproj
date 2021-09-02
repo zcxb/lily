@@ -12,7 +12,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="$(MicrosoftPackageVersion)" />
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="$(MicrosoftPackageVersion)" />
     <PackageReference Include="RestSharp" Version="106.11.7" />
-    <PackageReference Include="Rise.Core" Version="0.0.1" />
+    <PackageReference Include="Rise.Core" Version="0.0.2-release202109022226" />
   </ItemGroup>
 
 </Project>

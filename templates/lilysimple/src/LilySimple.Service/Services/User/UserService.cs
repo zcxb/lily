@@ -1,10 +1,8 @@
-﻿using LilySimple.EntityFrameworkCore;
-using LilySimple.Services;
-using LilySimple.Settings;
-using LilySimple.Shared.Enums;
+﻿using LilySimple.Settings;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Rise.EfCore;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -12,7 +10,6 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using UserModel = LilySimple.Entities.User;
 
 namespace LilySimple.Services
 {

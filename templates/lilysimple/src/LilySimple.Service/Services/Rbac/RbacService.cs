@@ -12,18 +12,18 @@ namespace LilySimple.Services
 {
     public partial class ErrorCode
     {
-        public const int PermissionNotFound = 4000;
-        public const int PermissionCodeOrNameDuplicated = 4001;
-        public const int ParentPermissionNotFound = 4002;
-        public const int CannotDeletePermissionThatContainsSubPermissions = 4002;
-        public const int CannotDeletePermissionThatGrantedToRoles = 4002;
-        public const int RoleNotFound = 4002;
-        public const int CannotModifyReservedRole = 4002;
-        public const int RoleNameDuplicated = 4002;
-        public const int CannotDeleteReservedRole = 4002;
-        public const int RoleInUse = 4002;
-        public const int UserNotFound = 4002;
-        public const int UserNameDuplicated = 4002;
+        public const int PermissionNotFound = 41002;
+        public const int PermissionCodeOrNameDuplicated = 41003;
+        public const int ParentPermissionNotFound = 41004;
+        public const int CannotDeletePermissionThatContainsSubPermissions = 41005;
+        public const int CannotDeletePermissionThatGrantedToRoles = 41006;
+        public const int RoleNotFound = 41007;
+        public const int CannotModifyReservedRole = 41008;
+        public const int RoleNameDuplicated = 41009;
+        public const int CannotDeleteReservedRole = 41010;
+        public const int RoleInUse = 41011;
+        public const int UserNotFound = 41012;
+        public const int UserNameDuplicated = 41013;
     }
 
     public class RbacService : ServiceBase

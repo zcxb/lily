@@ -15,8 +15,7 @@ namespace LilySimple.Services
 {
     public partial class ErrorCode
     {
-        public const int WrongPassword = 3001;
-
+        public const int WrongPassword = 41001;
     }
 
     public class UserService : ServiceBase

@@ -80,17 +80,9 @@ namespace LilySimple.Services
             {
                 return Task.FromResult(R.Error(ErrorCode.WrongPassword, nameof(ErrorCode.WrongPassword)));
             }
-            try
-            {
-                entity.ChangePassword(BCrypt.Net.BCrypt.HashPassword(newPassword));
-                Db.SaveChanges();
-                return Task.FromResult(R.Ok());
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex, ex.Message);
-                throw;
-            }
+            entity.ChangePassword(BCrypt.Net.BCrypt.HashPassword(newPassword));
+            Db.SaveChanges();
+            return Task.FromResult(R.Ok());
         }
 
         public Task<R> GetUserProfile(int userId, bool isAdmin)

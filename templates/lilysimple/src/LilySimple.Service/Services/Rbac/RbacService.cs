@@ -42,28 +42,21 @@ namespace LilySimple.Services
             var adminUserName = Configuration["AdminInit:UserName"] ?? "admin";
             var adminPassword = Configuration["AdminInit:Password"] ?? "123456";
 
-            try
+            if (Db.Users.Any(u => u.UserName.Equals(adminUserName)))
             {
-                if (Db.Users.Any(u => u.UserName.Equals(adminUserName)))
-                {
-                    Logger.LogInformation("admin account exists, quit init process");
-                    return;
-                }
-
-                var model = new User
-                {
-                    UserName = adminUserName,
-                    PasswordHash = BCrypt.Net.BCrypt.HashPassword(adminPassword)
-                };
-                var entity = Db.Users.Add(model).Entity;
-                if (Db.SaveChanges() > 0)
-                {
-                    Logger.LogInformation("admin account has been created.");
-                }
+                Logger.LogInformation("admin account exists, quit init process");
+                return;
             }
-            catch (Exception ex)
+
+            var model = new User
             {
-                Logger.LogError(ex, ex.Message);
+                UserName = adminUserName,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(adminPassword)
+            };
+            var entity = Db.Users.Add(model).Entity;
+            if (Db.SaveChanges() > 0)
+            {
+                Logger.LogInformation("admin account has been created.");
             }
         }
 
@@ -117,23 +110,15 @@ namespace LilySimple.Services
                 return Task.FromResult(R.Error(ErrorCode.ParentPermissionNotFound, nameof(ErrorCode.ParentPermissionNotFound)));
             }
 
-            try
+            var model = Permission.Create(name, code, path, parentId, type.ToEnumValue<PermissionType>(), sort);
+            var entity = Db.Permissions.Add(model).Entity;
+            Db.SaveChanges();
+            return Task.FromResult(R.Object(new PermissionEntityResponse
             {
-                var model = Permission.Create(name, code, path, parentId, type.ToEnumValue<PermissionType>(), sort);
-                var entity = Db.Permissions.Add(model).Entity;
-                Db.SaveChanges();
-                return Task.FromResult(R.Object(new PermissionEntityResponse
-                {
-                    Id = entity.Id,
-                    Code = code,
-                    Name = name,
-                }));
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex, ex.Message);
-                throw;
-            }
+                Id = entity.Id,
+                Code = code,
+                Name = name,
+            }));
         }
 
         public Task<R> ModifyPermission(int id, string name, string code, string path, int parentId, string type, int sort)
@@ -151,17 +136,9 @@ namespace LilySimple.Services
             {
                 return Task.FromResult(R.Error(ErrorCode.ParentPermissionNotFound, nameof(ErrorCode.ParentPermissionNotFound)));
             }
-            try
-            {
-                permissionEntity.Modify(name, code, path, parentId, type.ToEnumValue<PermissionType>(), sort);
-                Db.SaveChanges();
-                return Task.FromResult(R.Ok());
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex, ex.Message);
-                throw;
-            }
+            permissionEntity.Modify(name, code, path, parentId, type.ToEnumValue<PermissionType>(), sort);
+            Db.SaveChanges();
+            return Task.FromResult(R.Ok());
         }
 
         public Task<R> DeletePermission(int id)
@@ -179,17 +156,9 @@ namespace LilySimple.Services
             {
                 return Task.FromResult(R.Error(ErrorCode.CannotDeletePermissionThatGrantedToRoles, nameof(ErrorCode.CannotDeletePermissionThatGrantedToRoles)));
             }
-            try
-            {
-                Db.Permissions.Remove(permissionEntity);
-                Db.SaveChanges();
-                return Task.FromResult(R.Ok());
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex, ex.Message);
-                throw;
-            }
+            Db.Permissions.Remove(permissionEntity);
+            Db.SaveChanges();
+            return Task.FromResult(R.Ok());
         }
 
         public Task<R> GetPaginatedRoles(int page, int pageSize)
@@ -481,16 +450,8 @@ namespace LilySimple.Services
             }
 
             Db.Users.Remove(userEntity);
-            try
-            {
-                Db.SaveChanges();
-                return Task.FromResult(R.Ok());
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex, ex.Message);
-                throw;
-            }
+            Db.SaveChanges();
+            return Task.FromResult(R.Ok());
         }
     }
 }

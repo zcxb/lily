@@ -1,9 +1,10 @@
-﻿using LilySimple.EntityFrameworkCore;
-using LilySimple.Entities;
+﻿using LilySimple.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Rise.Data;
+using Rise.EfCore;
 
 namespace LilySimple.Contexts
 {

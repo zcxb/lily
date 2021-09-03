@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace LilySimple.Services.Rbac
+namespace LilySimple.Services
 {
     public class UserRolesResponse
     {

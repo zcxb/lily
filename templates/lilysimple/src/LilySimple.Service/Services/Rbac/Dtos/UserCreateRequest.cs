@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace LilySimple.Services.Rbac
+namespace LilySimple.Services
 {
     public class UserCreateRequest
     {

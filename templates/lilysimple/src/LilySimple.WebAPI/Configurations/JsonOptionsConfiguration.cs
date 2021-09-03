@@ -14,6 +14,7 @@ namespace LilySimple.Configurations
         {
             services.AddJsonOptions(options =>
             {
+                options.JsonSerializerOptions.IgnoreNullValues = true;
                 options.JsonSerializerOptions.Converters.Add(new TreeNodeConverter());
                 options.JsonSerializerOptions.Converters.Add(new UnixTimestampConverter());
             });

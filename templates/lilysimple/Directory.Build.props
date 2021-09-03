@@ -1,5 +1,6 @@
 <Project>
  <PropertyGroup>
    <MicrosoftPackageVersion>3.0.0</MicrosoftPackageVersion>
+   <RisePackageVersion>0.0.2-release202109022226</RisePackageVersion>
  </PropertyGroup>
 </Project>

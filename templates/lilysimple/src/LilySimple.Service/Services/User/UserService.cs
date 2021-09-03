@@ -1,99 +1,103 @@
-﻿using LilySimple.EntityFrameworkCore;
-using LilySimple.Services.Rbac;
-using LilySimple.Shared.Enums;
+﻿using LilySimple.Settings;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using Rise.EfCore;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using UserModel = LilySimple.Entities.User;
 
-namespace LilySimple.Services.User
+namespace LilySimple.Services
 {
+    public partial class ErrorCode
+    {
+        public const int WrongPassword = 3001;
+
+    }
+
     public class UserService : ServiceBase
     {
         private readonly RbacService _rbacService;
+        private readonly JwtBearerSetting _jwtBearerSetting;
 
-        public UserService(RbacService rbacService) 
+        public UserService(RbacService rbacService,
+                               IOptions<JwtBearerSetting> jwtBearerSetting)
         {
             _rbacService = rbacService;
+            _jwtBearerSetting = jwtBearerSetting?.Value ?? throw new ArgumentNullException(nameof(jwtBearerSetting));
         }
 
-
-
-        public Task<(UserLoginStatus, Claim[])> ValidateLoginUser(string userName, string password)
+        public Task<R> Login(UserLoginRequest request)
         {
-            Logger.LogInformation("hello");
             IList<Claim> claims = new List<Claim>();
 
-            var entity = Db.Users.Where(u => u.UserName == userName).FirstOrDefault();
+            var entity = Db.Users.Where(u => u.UserName == request.UserName).FirstOrDefault();
             if (entity == null)
             {
-                return Task.FromResult((UserLoginStatus.AccountNotFound, claims.ToArray()));
+                return Task.FromResult(R.Error(ErrorCode.UserNotFound, nameof(ErrorCode.UserNotFound)));
             }
 
-            bool isValid = BCrypt.Net.BCrypt.Verify(password, entity.PasswordHash);
-            if (isValid)
+            if (!BCrypt.Net.BCrypt.Verify(request.Password, entity.PasswordHash))
             {
-                claims.Add(new Claim("sub", entity.Id.ToString()));
-                claims.Add(new Claim("username", entity.UserName));
-                return Task.FromResult((UserLoginStatus.Success, claims.ToArray()));
+                Logger.LogDebug("user {UserName}[{UserId}] login failed", request.UserName, entity.Id);
+                return Task.FromResult(R.Error(ErrorCode.WrongPassword, nameof(ErrorCode.WrongPassword)));
             }
-            else
+
+            claims.Add(new Claim("sub", entity.Id.ToString()));
+            claims.Add(new Claim("username", entity.UserName));
+
+            return Task.FromResult(R.Object(new UserLoginResponse
             {
-                Logger.LogDebug("user {UserName}[{UserId}] login failed", userName, entity.Id);
-                return Task.FromResult((UserLoginStatus.WrongPassword, claims.ToArray()));
-            }
+                AccessToken = GenerateJwtToken(claims),
+                ExpiresIn = _jwtBearerSetting.Expires,
+            }));
         }
 
-        public Task<Flag> ChangePassword(int userId, string oldPassword, string newPassword)
+        private string GenerateJwtToken(IEnumerable<Claim> claims)
         {
-            var result = new Flag();
+            var token = new JwtSecurityToken(
+                    claims: claims,
+                    issuer: _jwtBearerSetting.Issuer,
+                    expires: DateTime.Now.AddSeconds(_jwtBearerSetting.Expires),
+                    signingCredentials: new SigningCredentials(
+                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtBearerSetting.SecurityKey)),
+                        SecurityAlgorithms.HmacSha256));
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
 
-            var entity = Db.Users.GetById(userId);
+        public Task<R> ChangePassword(int userId, string oldPassword, string newPassword)
+        {
+            var entity = Db.Users.GetById(userId).FirstOrDefault();
             if (entity == null)
             {
-                result.Fail("用户不存在");
+                return Task.FromResult(R.Error(ErrorCode.UserNotFound, nameof(ErrorCode.UserNotFound)));
             }
-            else if (!BCrypt.Net.BCrypt.Verify(oldPassword, entity.PasswordHash))
+            if (!BCrypt.Net.BCrypt.Verify(oldPassword, entity.PasswordHash))
             {
-                result.Fail("旧密码错误");
+                return Task.FromResult(R.Error(ErrorCode.WrongPassword, nameof(ErrorCode.WrongPassword)));
             }
-            else
-            {
-                entity.ChangePassword(BCrypt.Net.BCrypt.HashPassword(newPassword));
-                if (Db.SaveChanges() > 0)
-                {
-                    result.Succeed();
-                }
-            }
-
-            return Task.FromResult(result);
+            entity.ChangePassword(BCrypt.Net.BCrypt.HashPassword(newPassword));
+            Db.SaveChanges();
+            return Task.FromResult(R.Ok());
         }
 
-        public Task<Wrapped<UserProfileResponse>> GetUserProfile(int userId, bool isAdmin)
+        public Task<R> GetUserProfile(int userId, bool isAdmin)
         {
-            var response = new Wrapped<UserProfileResponse>();
-
-            var userEntity = Db.Users.GetById(userId);
+            var userEntity = Db.Users.GetById(userId).FirstOrDefault();
             if (userEntity == null)
             {
-                response.Fail("User not exist");
+                return Task.FromResult(R.Error(ErrorCode.UserNotFound, nameof(ErrorCode.UserNotFound)));
             }
-            else
+            var permissions = _rbacService.GetTreePermissions(isAdmin ? 0 : userId);
+            return Task.FromResult(R.Object(new UserProfileResponse
             {
-                var permissions = _rbacService.GetTreePermissions(isAdmin ? 0 : userId);
-
-                response.Succeed(new UserProfileResponse
-                {
-                    UserName = userEntity.UserName,
-                    Permissions = permissions
-                });
-            }
-
-            return Task.FromResult(response);
+                UserName = userEntity.UserName,
+                Permissions = permissions
+            }));
         }
     }
 }

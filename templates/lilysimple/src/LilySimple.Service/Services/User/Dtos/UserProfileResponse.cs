@@ -1,10 +1,10 @@
-﻿using LilySimple.Services.Rbac;
+﻿using LilySimple.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace LilySimple.Services.User
+namespace LilySimple.Services
 {
     public class UserProfileResponse
     {

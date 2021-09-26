@@ -449,9 +449,24 @@ namespace LilySimple.Services
                 return Task.FromResult(R.Error(ErrorCode.UserNotFound, nameof(ErrorCode.UserNotFound)));
             }
 
-            Db.Users.Remove(userEntity);
-            Db.SaveChanges();
-            return Task.FromResult(R.Ok());
+            using var trans = Db.Database.BeginTransaction();
+            try
+            {
+                Db.Users.Remove(userEntity);
+                Db.SaveChanges();
+
+                Db.UserRoles.RemoveRange(Db.UserRoles.Where(ur => ur.UserId == userId));
+                Db.SaveChanges();
+                trans.Commit();
+
+                return Task.FromResult(R.Ok());
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, ex.Message);
+                trans.Rollback();
+                throw;
+            }
         }
     }
 }

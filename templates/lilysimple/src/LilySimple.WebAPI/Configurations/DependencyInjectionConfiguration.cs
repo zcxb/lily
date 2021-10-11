@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using LilySimple.EventBus;
 using LilySimple.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Logging;
@@ -22,11 +23,12 @@ namespace LilySimple.Configurations
     {
         protected override void Load(ContainerBuilder builder)
         {
-           
+            var exportedTypes = typeof(ServiceBase).Assembly.GetExportedTypes().ToList();
 
-            var servicesTypesInAssembly = typeof(ServiceBase).Assembly.GetExportedTypes()
-                .Where(type => typeof(ServiceBase).IsAssignableFrom(type)).ToArray();
-            builder.RegisterTypes(servicesTypesInAssembly).PropertiesAutowired();
+            builder.RegisterTypes(exportedTypes.Where(t => typeof(ServiceBase).IsAssignableFrom(t)).ToArray())
+                .InstancePerLifetimeScope().AsSelf().PropertiesAutowired();
+            builder.RegisterTypes(exportedTypes.Where(t => typeof(IEventHandler).IsAssignableFrom(t)).ToArray())
+                .InstancePerLifetimeScope().AsImplementedInterfaces().PropertiesAutowired();
         }
     }
 }

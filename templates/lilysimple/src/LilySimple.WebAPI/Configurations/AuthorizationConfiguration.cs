@@ -12,7 +12,7 @@ namespace LilySimple.Configurations
     {
         public static IServiceCollection AddCustomPermission(this IServiceCollection services)
         {
-            services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
+            services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
 
             return services;
         }
